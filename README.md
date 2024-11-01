@@ -8,54 +8,15 @@
 * Heidi Pappila
 * Ville Mörsäri
 
-## Projektin kuvaus
+# Projektin kuvaus
 
-Tässä projektissa pyritään tarjoamaan Kainuun Hyvinvointialueelle data-analyysipalveluja, jotka tukevat päätöksentekoa ja parantavat palveluiden laatua. Analyysit keskittyvät erityisesti henkilöstön työtyytyväisyyteen (NES) ja asiakastyytyväisyyteen (HOPP), keskittyen tärkeimpiin osa-alueisiin, kuten johtamiseen, sitoutuneisuuteen ja asiakaspalvelun laatuun. Tavoitteena on tuottaa hyödyllistä tietoa, joka auttaa Kainuun Hyvinvointialuetta parantamaan toimintansa tehokkuutta, kehittämään henkilöstön hyvinvointia ja asiakastyytyväisyyttä sekä optimoimaan resurssien käyttöä alueen sosiaali- ja terveyspalveluissa sekä pelastustoimessa. Data-analyysit tarjoavat selkeitä ja käytännöllisiä näkökulmia, jotka tukevat strategisten päätösten tekemistä ja palveluiden kehittämistä Kainuun alueella.
+Tässä projektissa pyritään asiakkaalle, eli Kainuun Hyvinvointialueelle tarjoamaan...
 
-## Projektin rakenne
-```
-PROJECT_SIGMA/
-│
-├── docker-compose.yml             # Compose file to manage containers and networking
-│
-├── ingestion/                     # Container 1: Data ingestion
-│   ├── Dockerfile                 # Dockerfile for ingestion container
-|   ├──README.md
-│   ├── src/                       # Source code for ingestion
-│       ├── __init__.py
-│       ├── ingestion_api.py       # FastAPI ingestion  
-│       └── utils.py               # Utility functions for Ingestion tool
-│
-├── database/                      # Container 2: CosmosDB Query service
-│   ├── Dockerfile                 # Dockerfile for database container
-|   ├── README.md
-|   ├── db_templates/              # SQL templates used for querying
-|   |   ├── bronze.sql             # Bronze template
-│   ├── src/                       # Source code for database query service
-│   │   ├── __init__.py
-│   │   ├── connection_tool.py     # Connection module to database
-│   │   ├── database_api.py        # Fast API for query service
-│   │   └── utils.py               # Utility functions for database api
-│
-├── app/                           # Container 3: Streamlit app
-│   ├── Dockerfile                 # Dockerfile for Streamlit container
-|   ├── README.md
-│   ├── src/                       # Source code for Streamlit
-│   │   ├── __init__.py
-│   │   ├── streamlit_app.py       # Entrypoint for Streamlit (UI and API calls)
-│   │   └── utils.py               # Utility functions for streamlit
-│
-└── shared/                        # Shared resources and configurations
-    ├── requirements/              # Requirements files for each container
-    │   ├── ingestion.txt
-    │   ├── database.txt
-    │   |── app.txt
-    │   └── local.txt
-    └── .env                       # Environment variables
+- Tavoite/päämäärä (mitä tavoitellaan/miten asiakas hyötyy tästä)
+- Minkä laista analyysia tarjotaan
+- Visuaalinen analyysi Streamlit UI (mitä löytyy/käytetään)
 
-```  
-
-## Sovelluksen työkalut
+# Sovelluksen työkalut
 
 ##### Listattu vaaditut työkalut sovelluksen käyttöön.
 
@@ -66,7 +27,7 @@ PROJECT_SIGMA/
 * Docker Compose
 * Streamlit
 
-## Riippuvuksien ja työkalujen asennus ja käyttöönotto
+# Riippuvuksien ja työkalujen asennus ja käyttöönotto
 
 ##### Ohjeet projektin riippuvuuksien asentamiseen sekä Docker, Docker Compose ja Streamlit käyttöön.
 
@@ -157,7 +118,7 @@ docker compose -f docker-compose-docs.yml up
 docker compose -f docker-compose-docs.yml down
 ```
 
-## CosmosDB käyttöohje?
+# CosmosDB käyttöohje?
 
-## Jotain tänne datan käsittelystä ja tietokannasta?
+# Jotain tänne datan käsittelystä ja tietokannasta?
 
