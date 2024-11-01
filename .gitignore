@@ -6,3 +6,4 @@ data/ingestion/*
 !data/ingestion/.gitkeep
 data/HOPP/
 data/NES/
+*.pyc
