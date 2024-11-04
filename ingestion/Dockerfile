@@ -11,9 +11,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the source code into the container
 COPY ./ingestion/src /app/src
 COPY ./shared/.env/ /app/.env
+COPY ./data/ /app/data
 
 # Set environment variables for CosmosDB (optional if using env_file in docker-compose)
 ENV PYTHONPATH=/app/src
 
+EXPOSE 8080
+
 # Set entrypoint
-# CMD ["python", "/app/src/main.py"]
+#CMD ["python", "/app/src/ingestion.py"]
+CMD ["uvicorn", "ingestion_api:app", "--host", "0.0.0.0", "--port", "8080"]

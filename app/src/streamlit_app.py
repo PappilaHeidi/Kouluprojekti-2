@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+from utils import upload_ingestion_file
 
 # Set the Streamlit app title
 st.title("Data Ingestion to CosmosDB")
@@ -8,10 +9,7 @@ st.title("Data Ingestion to CosmosDB")
 uploaded_file = st.file_uploader("Upload your XLSX file", type=["xlsx"])
 
 if uploaded_file is not None:
-    # Save the uploaded file to the ingestion container
-    save_path = f"/data/{uploaded_file.name}"
-    with open(save_path, "wb") as f:
-        f.write(uploaded_file.getbuffer())
+    #upload_ingestion_file(uploaded_file)
 
     # Provide a download button for the uploaded file
     st.download_button(
@@ -24,9 +22,9 @@ if uploaded_file is not None:
     if st.button("Ingest Data"):
         # Trigger the ingestion process via the API in the ingestion container
         st.write("Ingesting data...")
-        response = requests.post("http://ingestion:8000/ingest/", files={"file": uploaded_file})
+        response = requests.post("http://ingestion:8080/ingest/", files={"file": uploaded_file})
 
         if response.status_code == 200:
-            st.write(response.json()["message"])
+            st.write(response.status_code)
         else:
             st.write("Error during ingestion!")

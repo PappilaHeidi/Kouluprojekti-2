@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the source code into the container
 COPY ./app/src /app/src
+COPY ./data/ /app/data/
 
 # Set the PYTHONPATH to make `src` available for imports
 ENV PYTHONPATH=/app/src
