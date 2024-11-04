@@ -5,7 +5,7 @@ app = FastAPI()
 
 # Initialize the CosmosDB connection
 
-@app.post("/ingest/")
+@app.post("/upload_bronze/")
 async def ingest(data: dict):
     cosmos_connection = CosmosDBConnection(container='HOPP', medallion='Bronze')
     # Call the upload method to insert data into CosmosDB
