@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  database:
+    build:
+      context: .
+      dockerfile: ./database/Dockerfile
+    container_name: database_container
+    env_file:
+      - ./shared/.env                       # Load environment variables from shared/.env file
+    networks:
+      - project-network
+    ports:
+      - "8081:8081"                         # Optional: expose port if CosmosDB emulator is used locally
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  ingestion:
+    build:
+      context: .
+      dockerfile: ./ingestion/Dockerfile
+    container_name: ingestion_container
+    env_file:
+      - ./shared/.env                       # Load environment variables from shared/.env file
+    depends_on:
+      - database                            # Ensures CosmosDB is up before ingestion
+    networks:
+      - project-network
+    volumes:
+      - ./data:/app/data
+    ports:
+          - "8080:8080"
+
+  app:
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    container_name: app_container
+    env_file:
+      - ./shared/.env                       # Load environment variables from shared/.env file
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - database
+      - ingestion                            # Ensures database service is up before app
+    networks:
+      - project-network
+
+    ports:
+      - "8501:8501"
+
+networks:
+  project-network:
+    driver: bridge                          # Enable inter-service communication

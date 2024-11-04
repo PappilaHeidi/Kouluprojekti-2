@@ -1,0 +1,4 @@
+azure-cosmos==4.7.0
+fastapi
+pandas
+uvicorn
