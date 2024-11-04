@@ -4,4 +4,5 @@ config.py
 __pycache__
 data/ingestion/*
 !data/ingestion/.gitkeep
-
+data/HOPP/
+data/NES/
