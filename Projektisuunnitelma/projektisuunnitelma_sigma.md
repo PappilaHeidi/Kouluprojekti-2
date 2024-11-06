@@ -18,14 +18,16 @@ sisältää useita eri kysymyksiä yhteensä,  22 kysymystä.
 
 #### Projektin kuvaaja:
 
-![Kuvaus](https://gitlab.dclabra.fi/wiki/uploads/c29d6923-c189-4c7c-a000-eb54c5c79b3f.png)
+![Kuvaus](../Projektisuunnitelma/image_new.png)
 
 # 2. Data-aineisto
 Data-aineistona käytetään Kainuun Hyvinvointialueen henkilöstön työtyyvyväisyys, sekä asiakastyytyväisyys keräyksistä saatua esikäsittelemätöntä dataa. 
 
 Dataa on määrällisesti vähän, excel tiedostoja: 
-HOPP: noin. 1032 Kib 
+HOPP: noin. 1032 Kib
 NES: noin 165 Kib
+
+
 
 # 3. Tiimi
 ### Roolit ja roolien tehtävät:
