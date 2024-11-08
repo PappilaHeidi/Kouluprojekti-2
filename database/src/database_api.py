@@ -1,13 +1,24 @@
 from fastapi import FastAPI
-from connection import CosmosDBConnection
+import azure.cosmos.cosmos_client as cosmos_client
+import azure.cosmos.exceptions as exceptions
+import azure.cosmos.partition_key as pk
+import os
+import utils
+from connection import MojovaDB
+
 
 app = FastAPI()
 
 # Initialize the CosmosDB connection
 
-@app.post("/upload_bronze/")
-async def ingest(data: dict):
-    cosmos_connection = CosmosDBConnection(container='HOPP', medallion='Bronze')
-    # Call the upload method to insert data into CosmosDB
-    cosmos_connection.upload_data(data['data'])
-    return {"message": "Data ingestion to CosmosDB completed successfully."}
+@app.post("/upload_bronze/hopp")
+async def ingest_hopp(data: dict):
+   client = MojovaDB('Analytics')
+   client.connection()
+   print("success for hopp")
+
+@app.post("/upload_bronze/nes")
+async def ingest_hopp(data: dict):
+   db_client = MojovaDB('Analytics')
+   con = db_client.connection()
+   print("success for nes")
