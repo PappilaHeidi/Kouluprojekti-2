@@ -26,4 +26,4 @@ class IngestionTool():
 
     def json_to_file(self, filename):
         fpath = os.path.join(self.ingestion_path, f"{filename}.json")
-        self.df.to_json(fpath, orient='records', lines=True, indent=4)
+        self.df.to_json(fpath, orient='records', indent=4)
