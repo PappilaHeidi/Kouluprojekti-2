@@ -42,13 +42,21 @@ async def ingest(file: UploadFile = File(...)):
     # save file in json format locally
     itool.json_to_file(file.filename)
 
+    # set unique id
+    itool.set_id()
+
+    # set partition key for cosmosdb
+    # we will use medallion architecture as partition keys
+    itool.set_partitionkey(medallion='bronze')
+    print(itool.json_data)
     try:
-        database_response = requests.post(f"http://database:8081/upload_bronze/{pk}", json={"data": itool.json_data})
+        database_response = requests.post(f"http://database:8081/upload_bronze/{pk}", json=itool.json_data)
 
         if database_response.status_code == 200:
             return {"message": "Data ingestion completed successfully."}
         else:
             return {"message": "Error during database ingestion!", "details": database_response.text}
     except requests.exceptions.RequestException as e:
+        print("fail in database container", e)
         return {"message": "Failed to connect to the database service.", "details": str(e)}
 

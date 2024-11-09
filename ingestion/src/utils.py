@@ -2,6 +2,8 @@ import pandas as pd
 import json
 import os
 import re
+import uuid
+import numpy as np
 
 class IngestionTool():
     def __init__(self):
@@ -46,8 +48,9 @@ class IngestionTool():
     def json_to_file(self, filename):
         fpath = os.path.join(self.ingestion_path, f"{filename}.json")
         self.df.to_json(fpath, orient='records', indent=4, lines=False)
-        self.json_data = self.df.to_json(orient='records')
-    
+        self.df = self.df.replace({np.nan: None})
+        self.json_data = self.df.to_dict(orient='records')
+        print(type(self.json_data))
     def test_partition(self, filename):
         # Define regex patterns for "hopp" and "nes" separately
         hopp_pattern = r'(?:\b|_)hopp'
@@ -61,3 +64,11 @@ class IngestionTool():
         # If neither is found, return None or handle as needed
         else:
             return None
+
+    def set_id(self):
+        for item in self.json_data:
+            item.setdefault("id", str(uuid.uuid4()))
+
+    def set_partitionkey(self, medallion: str):
+        for item in self.json_data:
+            item.setdefault("/medallion", medallion)

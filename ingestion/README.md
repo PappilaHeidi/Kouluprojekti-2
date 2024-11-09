@@ -23,6 +23,12 @@ Uudet kentät lisätään. Jos päivitettävässä uudessa kohteessa on kenttiä
 
 ## Miten bronze dataa voi kysellä?
 Yhdistä tietokanta-clientin avulla Analytics-konttiin:
+
+```
+
+
+```
+
 ```
 SELECT * FROM c
 ```

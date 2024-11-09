@@ -3,8 +3,7 @@ import azure.cosmos.cosmos_client as cosmos_client
 import azure.cosmos.exceptions as exceptions
 import azure.cosmos.partition_key as pk
 import os
-import utils
-from connection import MojovaDB
+from connection_tool import MojovaDB
 
 
 app = FastAPI()
@@ -12,13 +11,18 @@ app = FastAPI()
 # Initialize the CosmosDB connection
 
 @app.post("/upload_bronze/hopp")
-async def ingest_hopp(data: dict):
-   client = MojovaDB('Analytics')
-   client.connection()
+async def ingest_hopp(data: list[dict]):
+   print("test")
+   db = MojovaDB('Analytics')
+   db.connect()
+   db.upsert_data(data)
    print("success for hopp")
 
 @app.post("/upload_bronze/nes")
-async def ingest_hopp(data: dict):
-   db_client = MojovaDB('Analytics')
-   con = db_client.connection()
+async def ingest_hopp(data: list[dict]):
+   db = MojovaDB('Analytics')
+   db.connect()
+
+   # same as hopps
+   # db.upsert_data(data)
    print("success for nes")
