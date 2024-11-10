@@ -1,3 +1,5 @@
+# PROJEKTIOPINNOT 2 - Projektisuunnitelma / Mojovat 
+
 ##### Projektin tekijät ovat:
 
 * Andreas Konga
@@ -44,7 +46,7 @@ PROJECT_SIGMA/
     └── .env                       # Environment variable
 
 ```   
-# Projektin kuvaus
+## Projektin kuvaus
 
 Tässä projektissa pyritään asiakkaalle, eli Kainuun Hyvinvointialueelle tarjoamaan...
 
@@ -52,7 +54,7 @@ Tässä projektissa pyritään asiakkaalle, eli Kainuun Hyvinvointialueelle tarj
 - Minkä laista analyysia tarjotaan
 - Visuaalinen analyysi Streamlit UI (mitä löytyy/käytetään)
 
-# Sovelluksen työkalut
+## Sovelluksen työkalut
 
 ##### Listattu vaaditut työkalut sovelluksen käyttöön.
 
@@ -63,7 +65,7 @@ Tässä projektissa pyritään asiakkaalle, eli Kainuun Hyvinvointialueelle tarj
 * Docker Compose
 * Streamlit
 
-# Riippuvuksien ja työkalujen asennus ja käyttöönotto
+## Riippuvuksien ja työkalujen asennus ja käyttöönotto
 
 ##### Ohjeet projektin riippuvuuksien asentamiseen sekä Docker, Docker Compose ja Streamlit käyttöön.
 
@@ -108,7 +110,7 @@ ctrl + c / docker-compose down
 
 ### Streamlit käyttöohje
 
-# Dokumentointityökalu
+## Dokumentointityökalu
 
 ##### Projekti on dokumentoitu Markdown -pohjaisen MKDocs -työkalun avulla.
 
@@ -132,7 +134,7 @@ docker compose -f docker-compose-docs.yml up
 docker compose -f docker-compose-docs.yml down
 ```
 
-# CosmosDB käyttöohje?
+## CosmosDB käyttöohje?
 
-# Jotain tänne datan käsittelystä ja tietokannasta?
+## Jotain tänne datan käsittelystä ja tietokannasta?
 

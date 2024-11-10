@@ -7,3 +7,4 @@ data/ingestion/*
 data/HOPP/
 data/NES/
 *.pyc
+.DS_Store
