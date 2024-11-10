@@ -1,10 +1,14 @@
+# Konfiguraatiotiedostot
 config.py
-.venv
 .env
+# Python-työkalut ja ympäristöt
 __pycache__
+*.pyc
+.venv
+# Datahakemistot
 data/ingestion/*
 !data/ingestion/.gitkeep
 data/HOPP/
 data/NES/
-*.pyc
+# macOS tiedosto
 .DS_Store

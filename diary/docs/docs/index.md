@@ -2,7 +2,7 @@
 
 ## **Meistä**
 
-Ehkä meistä on jotain kivaa kerrottavaa? emt.
+Joku tarina meistä???
 
 ## **Projektisuunnitelma**
 
@@ -23,8 +23,8 @@ sisältää useita eri kysymyksiä yhteensä,  22 kysymystä.
 
 #### Projektin kuvaaja:
 
-![Kuvaus](https://gitlab.dclabra.fi/wiki/uploads/c29d6923-c189-4c7c-a000-eb54c5c79b3f.png)
-**Kuva 1:** Kuvaaja esittää projektin toteutussuunnitelman askel kerrallaan.
+![Kuvaus](images/image_new.png)
+**Kuva 1:** Kuvaaja esittää projektin toteutussuunnitelman vaiheittain ja sen toteutukseen vaadittavat työkalut.
 
 ### 2. Data-aineisto
 Data-aineistona käytetään Kainuun Hyvinvointialueen henkilöstön työtyyvyväisyys, sekä asiakastyytyväisyys keräyksistä saatua esikäsittelemätöntä dataa. 
@@ -43,6 +43,9 @@ NES: noin 165 Kib
 | Heidi    | Developer       | Tietokannan ylläpito             |
 | Linnea   | Scrum Master    | Vastuu projektisuunnitelusta     |
 | Ville    | Developer       | Datankäsittely                   |
+
+??? note "Huom!"
+    Roolit eivät ole täysin kiinteitä, vaan jokainen pääsee tekemään kaikenlaista oman halun ja kiinnostuksen mukaan.
 
 ### 4. Aikataulu
 #### Projektin aikataulu välitavoitteineen:
@@ -68,14 +71,12 @@ Projektin tavoitteena on käsitellä saatu data, sekä suorittaa erilaisia analy
 
 **Kehitystyökalut**
 
-  * Python
   * Azure Cosmos DB
   * Docker
-  * Gitlab dclabra
+  * GitLab Dclabra
   * Visual Studio Code
-  * Git
   * Streamlit
-  * jotain muuta en muista...
+  * JupyterLab
 
 **Kommunikaatio, Dokumentointi ja Työajanseuranta**
 

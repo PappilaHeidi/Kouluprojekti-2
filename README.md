@@ -1,4 +1,4 @@
-# PROJEKTIOPINNOT 2 - Projektisuunnitelma / Mojovat 
+# PROJEKTIOPINNOT 2: - Koneoppiminen (2024) - Mojovat 
 
 ##### Projektin tekijät ovat:
 
@@ -48,11 +48,7 @@ PROJECT_SIGMA/
 ```   
 ## Projektin kuvaus
 
-Tässä projektissa pyritään asiakkaalle, eli Kainuun Hyvinvointialueelle tarjoamaan...
-
-- Tavoite/päämäärä (mitä tavoitellaan/miten asiakas hyötyy tästä)
-- Minkä laista analyysia tarjotaan
-- Visuaalinen analyysi Streamlit UI (mitä löytyy/käytetään)
+Tässä projektissa pyritään tarjoamaan Kainuun Hyvinvointialueelle data-analyysipalveluja, jotka tukevat päätöksentekoa ja parantavat palveluiden laatua. Analyysit keskittyvät erityisesti henkilöstön työtyytyväisyyteen (NES) ja asiakastyytyväisyyteen (HOPP), keskittyen tärkeimpiin osa-alueisiin, kuten johtamiseen, sitoutuneisuuteen ja asiakaspalvelun laatuun. Tavoitteena on tuottaa hyödyllistä tietoa, joka auttaa Kainuun Hyvinvointialuetta parantamaan toimintansa tehokkuutta, kehittämään henkilöstön hyvinvointia ja asiakastyytyväisyyttä sekä optimoimaan resurssien käyttöä alueen sosiaali- ja terveyspalveluissa sekä pelastustoimessa. Data-analyysit tarjoavat selkeitä ja käytännöllisiä näkökulmia, jotka tukevat strategisten päätösten tekemistä ja palveluiden kehittämistä Kainuun alueella.
 
 ## Sovelluksen työkalut
 
