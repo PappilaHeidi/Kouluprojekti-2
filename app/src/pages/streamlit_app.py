@@ -36,8 +36,8 @@ if uploaded_file is not None:
             st.write("Error during ingestion!")
 
 # FastAPI endpoint URL for bronze hopp
-endpoint_bronze_hopp = "http://database:8081/get_bronze/hopp"
-endpoint_bronze_nes = "http://database:8081/get_bronze/nes"
+endpoint_bronze_hopp = "http://database:8081/get/bronze/hopp"
+endpoint_bronze_nes = "http://database:8081/get/bronze/nes"
 
 # Streamlit button
 if st.button("Fetch Bronze Hopp Data"):

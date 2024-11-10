@@ -5,7 +5,7 @@ FROM python:3.12-slim
 WORKDIR /app
 
 # Copy requirements and install dependencies
-COPY ./shared/requirements/ingestion.txt ./requirements.txt
+COPY ./shared/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the source code into the container
