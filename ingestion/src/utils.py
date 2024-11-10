@@ -51,6 +51,7 @@ class IngestionTool():
         self.df = self.df.replace({np.nan: None})
         self.json_data = self.df.to_dict(orient='records')
         print(type(self.json_data))
+
     def test_partition(self, filename):
         # Define regex patterns for "hopp" and "nes" separately
         hopp_pattern = r'(?:\b|_)hopp'

@@ -4,3 +4,4 @@ pandas
 uvicorn
 python-dotenv
 python-multipart
+Jinja2

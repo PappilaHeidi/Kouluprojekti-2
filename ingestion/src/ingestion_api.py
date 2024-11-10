@@ -47,7 +47,7 @@ async def ingest(file: UploadFile = File(...)):
 
     # set partition key for cosmosdb
     # we will use medallion architecture as partition keys
-    itool.set_partitionkey(medallion='bronze')
+    itool.set_partitionkey(medallion=('bronze'+ '_' + pk))
     print(itool.json_data)
     try:
         database_response = requests.post(f"http://database:8081/upload_bronze/{pk}", json=itool.json_data)

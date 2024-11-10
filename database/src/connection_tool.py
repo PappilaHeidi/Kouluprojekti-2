@@ -36,5 +36,10 @@ class MojovaDB():
             except exceptions.CosmosHttpResponseError as e:
                 print(f"Error uploading item at index {index}: {e}")
 
-
+    def query(self, query_template):
+        data = self.container.query_items(
+        query=query_template,
+        enable_cross_partition_query=True
+        )
+        return [item for item in data]
 
