@@ -1,4 +1,4 @@
-# PROJEKTIOPINNOT 2: - Koneoppiminen (2024) - Mojovat 
+# PROJEKTIOPINNOT 2: Koneoppiminen (2024) - Mojovat 
 
 ##### Projektin tekijät ovat:
 
