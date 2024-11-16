@@ -90,7 +90,9 @@ pip install -r requirements.txt
 ```
 4. Vaihtoehto 2: **Asenna riippuvuudet käyttämällä docker composea (ohjeet alla)**
 
-### Docker
+### Docker Compose
+
+**Sisältää levykuvat ingestionille, tietokannalle ja Streamlitille**
 
 1. **Rakenna levykuva ja kontti:**
 ```
@@ -105,7 +107,27 @@ docker-compose up
 ctrl + c / docker-compose down
 ```
 
+### CosmosDB (tietokanta) käyttöohje
+**Kun Docker Compose käynnistetty**
+
+1. **Navigoi selaimessa osoitteeseen:**
+
+* http://localhost:8081
+
+### Ingestion käyttöohje
+**Kun Docker Compose käynnistetty**
+
+1. **Navigoi selaimessa osoitteeseen:**
+
+* http://localhost:8080
+
 ### Streamlit käyttöohje
+**Kun Docker Compose käynnistetty**
+
+1. **Navigoi selaimessa osoitteeseen:**
+
+* http://localhost:8501
+
 
 ## Dokumentointityökalu
 
