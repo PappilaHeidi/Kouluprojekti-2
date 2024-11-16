@@ -11,4 +11,4 @@ data/ingestion/*
 data/HOPP/
 data/NES/
 # macOS tiedosto
-.DS_Store
+*.DS_Store
