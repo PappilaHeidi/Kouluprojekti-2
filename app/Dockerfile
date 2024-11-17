@@ -15,6 +15,7 @@ COPY ./data/ /app/data/
 # Set the PYTHONPATH to make `src` available for imports
 ENV PYTHONPATH=/app/src
 
+
 # Set entrypoint for Streamlit
 CMD ["streamlit", "run", "/app/src/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
 

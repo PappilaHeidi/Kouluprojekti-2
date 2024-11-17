@@ -1,0 +1,5 @@
+
+azure-cosmos
+python-dotenv
+pandas
+jinja2
