@@ -1,8 +1,10 @@
 
 
-
 ## Miten bronze-datan eri entiteettejä voi kysellä notebookissa
 
+```
+pip install -r ./shared/requirements/local.txt
+```
 Tämä tehdään pääosin projektin tietokannan malleissa Streamlitin kautta. Voit kuitenkin muokata kyselyjä tarpeittesi mukaan, esim. jos haluat hakea dataa per kvartaali ja vuosi notebookissa.
 
 Yhdistä tietokantaan clientilla Analytics-konttiin:
