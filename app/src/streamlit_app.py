@@ -1,6 +1,10 @@
 import streamlit as st
+import pandas as pd
 import requests
 from utils import upload_ingestion_file
+
+
+st.set_page_config(layout="wide")
 
 # Set the Streamlit app title
 st.title("Data Ingestion to CosmosDB")
@@ -28,3 +32,34 @@ if uploaded_file is not None:
             st.write(response.status_code)
         else:
             st.write("Error during ingestion!")
+
+# FastAPI endpoint URL for bronze hopp
+endpoint_bronze_hopp = "http://database:8081/get_bronze/hopp"
+endpoint_bronze_nes = "http://database:8081/get_bronze/nes"
+
+# Streamlit button
+if st.button("Fetch Bronze Hopp Data"):
+    # Make the GET request
+    response = requests.get(endpoint_bronze_hopp)
+
+    # Handle the response
+    if response.status_code == 200:
+        json_data = response.json()
+        # Display data if the request was successful
+        data = pd.DataFrame(json_data)  # Assuming the endpoint returns JSON data
+        st.dataframe(data, height=1000)
+    else:
+        st.error(f"Error: {response.status_code}, {response.text}")
+
+if st.button("Fetch Bronze NES Data"):
+    # Make the GET request
+    response = requests.get(endpoint_bronze_nes)
+
+    # Handle the response
+    if response.status_code == 200:
+        json_data = response.json()
+        # Display data if the request was successful
+        data = pd.DataFrame(json_data)  # Assuming the endpoint returns JSON data
+        st.dataframe(data, height=1000)
+    else:
+        st.error(f"Error: {response.status_code}, {response.text}")
