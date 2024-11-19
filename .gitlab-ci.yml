@@ -4,10 +4,9 @@ stages:
   - deploy
 
 pages:
-  stage: deploy
   script:
     - pip install mkdocs mkdocs-material  # Asennetaan MkDocs ja materiaaliteemat
-    - mkdocs build  --site-dir public # Rakennetaan dokumentaatio
+    - mkdocs build  --config-file diary/docs/mkdocs.yml --site-dir public # Rakennetaan dokumentaatio
   pages: true
   artifacts:
     paths:
