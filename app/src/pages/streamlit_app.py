@@ -3,11 +3,13 @@ import pandas as pd
 import requests
 from utils import upload_ingestion_file
 
+st.set_page_config(
+    page_title= "Ingestointi",
+    page_icon= "💾",
+    layout= "wide"
+)
 
-st.set_page_config(layout="wide")
-
-# Set the Streamlit app title
-st.title("Data Ingestion to CosmosDB")
+st.title("🛢️☁️ Data Ingestion to CosmosDB ☁️🛢️")
 
 # File uploader widget
 uploaded_file = st.file_uploader("Upload your XLSX file", type=["xlsx"])
