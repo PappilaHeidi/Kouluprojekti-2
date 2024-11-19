@@ -11,6 +11,7 @@ pages:
     - mkdocs build  --config-file diary/docs/mkdocs.yml --site-dir public # Rakennetaan dokumentaatio
     - mkdir -p public  # Luo public-kansio, jos sitä ei ole
     - cp -r diary/docs/public/* public/  # Kopioi sisällön juuren public-kansioon
+    - ls -l public
   pages: true
   artifacts:
     paths:
