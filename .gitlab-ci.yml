@@ -3,7 +3,7 @@ image: python:3.10  # Käytetään Pythonin Docker-kuvaa
 stages:
   - deploy
 
-deploy-pages:
+pages:
   stage: deploy
   script:
     - pip install mkdocs mkdocs-material  # Asennetaan MkDocs ja materiaaliteemat
