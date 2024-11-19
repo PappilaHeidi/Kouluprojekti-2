@@ -6,7 +6,7 @@ pages:
   stage: deploy
   script:
     - pip install mkdocs mkdocs-material  # Asennetaan MkDocs ja materiaaliteemat
-    - mkdocs build  # Rakennetaan dokumentaatio
+    - mkdocs build  --config-file diary/docs/mkdocs.yml # Rakennetaan dokumentaatio
   artifacts:
     paths:
       - public  # GitLab Pages käyttää tätä kansiota julkaisua varten
