@@ -5,7 +5,7 @@ pages:
   image: python:3.10  # Käytetään Pythonin Docker-kuvaa
   stage: deploy
   script:
-    - pip install mkdocs mkdocs-material awesome-pages  # Asennetaan MkDocs ja materiaaliteemat
+    - pip install mkdocs mkdocs-material  # Asennetaan MkDocs ja materiaaliteemat
     - mkdocs build  --config-file diary/docs/mkdocs.yml # Rakennetaan dokumentaatio
   artifacts:
     paths:
