@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the source code into the container
 COPY ./database/src /app/src
+COPY ./database/db_templates /app/db_templates
 
 # Set the PYTHONPATH to make `src` available for imports
 ENV PYTHONPATH=/app/src
