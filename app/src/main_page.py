@@ -9,7 +9,7 @@ st.set_page_config(
 
 # Sivun otsikko ja teksti
 st.title("⚜️ Mojovat ⚜️")
-st.write("Tämä on projektimme pääsivu, joka sisältää ...")
+st.write("Tämä on projektimme pääsivu, joka sisältää ... Tänne vois lisää myös GitLab stats")
 
 # Tekoälyllä luotu kuva
 st.image('/app/src/images/kuva.webp', caption='Kuva on luotu käyttäen OpenAI DALL·E 3 -työkalua.')
