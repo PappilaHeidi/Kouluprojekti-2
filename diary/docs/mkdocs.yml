@@ -3,8 +3,6 @@ site_name: 'Projekti 2 ML 2024'
 theme:
   name: 'material'
 
-site_dir: public
-
 markdown_extensions:
   # Footnotes
   - footnotes

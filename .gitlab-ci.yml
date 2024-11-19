@@ -1,12 +1,14 @@
+image: python:3.10  # Käytetään Pythonin Docker-kuvaa
+
 stages:
   - deploy
 
-pages:
-  image: python:3.10  # Käytetään Pythonin Docker-kuvaa
+deploy-pages:
   stage: deploy
   script:
     - pip install mkdocs mkdocs-material  # Asennetaan MkDocs ja materiaaliteemat
-    - mkdocs build  --config-file diary/docs/mkdocs.yml # Rakennetaan dokumentaatio
+    - mkdocs build  --site-dir public # Rakennetaan dokumentaatio
+  pages: true
   artifacts:
     paths:
       - public  # GitLab Pages käyttää tätä kansiota julkaisua varten
