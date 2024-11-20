@@ -155,7 +155,88 @@ docker compose -f docker-compose-docs.yml up
 docker compose -f docker-compose-docs.yml down
 ```
 
-# CosmosDB käyttöohje?
+# Bronze Pipeline
 
-# Jotain tänne datan käsittelystä ja tietokannasta?
+# Silver Pipeline
+
+Projektin koodeja ajetaan pääsääntöisesti Python Notebookkien avulla. Tätä varten sinun tulee asentaa tarvittavat Python-kirjastot.
+
+### Python kirjastot
+Luo virtuaaliympäristö
+```bash
+python3 -m venv .venv
+```
+
+Aktivoi virtuaaliympäristö
+```bash
+source .venv/bin/activate  ## MAC Tms
+source .venv/Scripts/activate ## Win 
+```
+tai
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+tai
+```cmd
+.\.venv\Scripts\activate.bat
+```
+
+Asenna python kirjastot
+```bash
+python -m pip install --upgrade pip
+python -m pip install -r shared/requirements.txt
+```
+
+### .env asennus
+
+.env -tiedostoon lisätään tarvittavia muuttujia, esimerkiksi tietokanta yhteyksiä varten tarvittavat URL:it, avaimet ja salasanat voidaan lisätä
+.env -tiedostoon. Siirrä .env tiedosto ./shared/ -kansioon.
+
+### Tietokanta API:n ajo
+
+Aktivoi ensin terminaalissa python .venv, jonk asensit aiemmin. Käynnistä sen jälkeen Tietokanta API:
+```bash
+python database/run_api.py
+```
+
+### Tietokanta docker ajo
+
+Alla olevan komennon avulla voit buildaa tietokanta API dockerin
+```bash
+docker build -t database-api -f ./database/Dockerfile .
+```
+
+Näin ajat kyseisen docker imagen
+```bash
+docker run -d --name database-api -p 8082:8082 database-api
+```
+
+Näin poistat
+```bash
+docker stop database-api
+docker rm database-api
+```
+
+### Tietokanta API:n käyttö
+
+Voit hekea esimerkiksi Bronze-tason datat. Kyselyt voit ajaa suoraan selaimesta, ainakin Chromen Pretty Print ominaisuus on ison datamäärän kanssa kätevä.
+```
+http://localhost:8082/get/silver/nes
+```
+formaatti on
+```
+http://localhost:8082/get/medallion/source
+```
+
+Voit ajaa Silver pipeline datat
+```
+http://localhost:8082/process/silver/hopp
+```
+Silver pipeline ajo, lataa Bronze-tason datat, ajaa sille Transformaatiot ja tallentaa tietokantaan. 
+Formaatti on vastaava, kuin yllä. 
+
+## Exit / Sulku 
+```
+Ctrl + C
+```
 

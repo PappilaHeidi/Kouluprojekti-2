@@ -55,6 +55,9 @@ Tiimi aloitti projektin ensimmäisen sprintin keskittymällä datan käsittelyn 
 ![INGESTION](../images/ingestointi.png)
 **Kuva 3:** Kuvassa näkyy ingestointi prosessi, jossa raakadataa siirretään tietokantaan (CosmosDB).
 
+![SPRINTTI1](../images/sprintti1.png)
+**Kuva 4:** Kuvassa näkyvät GitLabin Burndown- ja Burnup-kaaviot, jotka sisältävät sprintin aikana luodut issuet.
+
 ## **Seuraavaksi**
 
 Seuraavassa sprintissä tiimi jatkaa projektin etenemistä keskittymällä datan käsittelyyn ja siirtyy Silver-tason datan luomiseen. Käyttöliittymän kehitystä jatketaan myös, ja tuotetaan parempia data-analyseja Silver-tason datan pohjalta.

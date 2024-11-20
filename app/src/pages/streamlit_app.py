@@ -65,3 +65,19 @@ if st.button("Fetch Bronze NES Data"):
         st.dataframe(data, height=1000)
     else:
         st.error(f"Error: {response.status_code}, {response.text}")
+
+st.title("🛝 SQL Leikkikenttä 🛝")
+
+with st.container():
+    col1, col2 = st.columns(2)
+
+    with col1:
+        with st.form(key='query_form'):
+            raw_code = st.text_area("Kirjoita SQL Tähän")
+            submit_code = st.form_submit_button("Suorita")
+    
+    with col2:
+        if submit_code:
+            st.info("SQL Kysely Suoritettu")
+            with st.expander("Tulokset"):
+                st.write("Tulokset")
