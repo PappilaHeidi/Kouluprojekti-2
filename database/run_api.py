@@ -11,15 +11,15 @@ logging.basicConfig(
 )
 
 # Add the src directory to Python path
-current_dir = Path(__file__).parent
-src_dir = current_dir / "src"
+cur_dir = Path(__file__).parent
+src_dir = cur_dir / "src"
 print(src_dir)
-sys.path.append(str(current_dir))
+sys.path.append(str(src_dir))
 
 if __name__ == "__main__":
     # Configure uvicorn with more verbose logging
     uvicorn_config = uvicorn.Config(
-        "src.database_api:app",
+        "database_api:app",
         host="0.0.0.0",
         port=8082,
         reload=True,
