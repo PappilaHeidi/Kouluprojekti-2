@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from typing import List, Dict
 import logging
-from .connection_tool import MojovaDB
-from .utils import MojovaModels
-from .pipeline_manager import PipelineManager
+from connection_tool import MojovaDB
+from utils import MojovaModels
+from pipeline_manager import PipelineManager
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -18,8 +18,9 @@ VALID_SOURCES = ['hopp', 'nes']
 # Map medallion layers to database containers
 CONTAINER_MAPPING = {
     'bronze': 'Analytics',
-    'silver': 'Silver',
-    'gold': 'Gold'
+    'silver': 'Analytics',
+    'gold': 'Analytics',
+    'models': 'Models'
 }
 
 # Upload endpoint for uploading data to database (Used to upload Bronze data)

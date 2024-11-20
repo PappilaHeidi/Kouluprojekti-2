@@ -5,7 +5,7 @@ FROM python:3.12-slim
 WORKDIR /app
 
 # Copy requirements and install dependencies
-COPY ./shared/requirements/database.txt ./requirements.txt
+COPY ./shared/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the source code into the container
@@ -19,4 +19,4 @@ ENV PYTHONPATH=/app/src
 EXPOSE 8082
 
 # Start the FastAPI app using Uvicorn
-CMD ["uvicorn", "database_api:app", "--host", "0.0.0.0", "--port", "8082"]
+CMD ["uvicorn", "database_api:app", "--host", "0.0.0.0", "--port", "8081"]

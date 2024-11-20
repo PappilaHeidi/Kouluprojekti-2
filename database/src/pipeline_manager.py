@@ -1,8 +1,8 @@
 # pipeline_manager.py
 from datetime import datetime
 import pandas as pd
-from .connection_tool import MojovaDB
-from .utils import MojovaModels
+from connection_tool import MojovaDB
+from utils import MojovaModels
 import logging
 from typing import Dict
 import json
@@ -20,8 +20,8 @@ class PipelineManager:
         # Container mapping
         self.containers = {
             'bronze': 'Analytics',
-            'silver': 'Silver',
-            'gold': 'Gold'
+            'silver': 'Analytics',
+            'gold': 'Analytics'
         }
             
         logger.info(f"Initialized pipeline manager with source: {source_layer}, target: {target_layer}")
