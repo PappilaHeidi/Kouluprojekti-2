@@ -50,7 +50,7 @@ async def ingest(file: UploadFile = File(...)):
     itool.set_partitionkey(medallion=('bronze'+ '_' + pk))
     print(itool.json_data)
     try:
-        database_response = requests.post(f"http://database:8081/upload_bronze/{pk}", json=itool.json_data)
+        database_response = requests.post(f"http://database:8081/upload/bronze/{pk}", json=itool.json_data)
 
         if database_response.status_code == 200:
             return {"message": "Data ingestion completed successfully."}
