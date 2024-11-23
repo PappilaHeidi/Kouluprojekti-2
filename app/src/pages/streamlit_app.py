@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import sqlite3
 import requests
 from utils import upload_ingestion_file
 
@@ -68,16 +69,58 @@ if st.button("Fetch Bronze NES Data"):
 
 st.title("🛝 SQL Leikkikenttä 🛝")
 
+# Valitse Datasetti
+dataset_option = st.radio("Valitse datasetti", ['HOPP', 'NES'])
+
+# Jos HOPP niin näkyy vain HOPP datasetin sarakkeet yms.
+if dataset_option == "HOPP":
+    csv = "./notebooks/playground/hopp_example.csv"
+    st.header(f"Valittu {dataset_option} Data 💉")
+# Jos NES niin näkyy vain NES datasetin sarakkeet yms.
+elif dataset_option == "NES":
+    csv = "./notebooks/playground/nes_example.csv"
+    st.header(f"Valittu {dataset_option} Data 🩺")
+
+# Luetaan CSV:t
+df = pd.read_csv(csv, sep=";")
+# SQLITE yhteys; memory käyttää RAM, jolloin ei tarvii luoda omaa tiedostoa kannalle
+conn = sqlite3.connect(":memory:")
+c = conn.cursor()
+# Uudelleen nimetään df -> "data"
+df.to_sql('data', conn, index=False, if_exists='replace')
+
+# Suorittaa SQL kyselyn
+def sql_executor(raw_code):
+    c.execute(raw_code)
+    columns = [description[0] for description in c.description] # Säilyttää sarakkeiden nimet
+    data = c.fetchall() # Nappaa kaiken datan
+    result_df = pd.DataFrame(data, columns=columns) # Muutetaan dataframeksi
+    return result_df
+
 with st.container():
     col1, col2 = st.columns(2)
 
     with col1:
+        # Kyselyn tekstikenttä ja suoritus nappi
         with st.form(key='query_form'):
             raw_code = st.text_area("Kirjoita SQL Tähän")
             submit_code = st.form_submit_button("Suorita")
-    
+            if submit_code:
+                try:
+                    # INSERT, UPDATE, DELETE yms. ei toimi
+                    if not raw_code.strip().lower().startswith("select"):
+                        st.error("Vain SELECT-kyselyt ovat sallittuja.")
+                    else:
+                        st.success("Kysely suoritettu onnistuneesti!")
+                except Exception as e:
+                    st.error(f"Virhe suorittaessa kyselyä: {str(e)}")
+
     with col2:
         if submit_code:
-            st.info("SQL Kysely Suoritettu")
-            with st.expander("Tulokset"):
-                st.write("Tulokset")
+            # Näyttää itse SQL kyselyn ja tuloksen, eli dataframen
+            st.code(raw_code)
+            result = sql_executor(raw_code)
+            st.write(result)
+
+# Suljetaan yhteys  
+conn.close()
