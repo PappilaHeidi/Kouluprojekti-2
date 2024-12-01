@@ -41,6 +41,7 @@ services:
       - ./shared/.env                       # Load environment variables from shared/.env file
     volumes:
       - ./data:/app/data
+      - ./app/src:/app/src
     depends_on:
       - database
       - ingestion                            # Ensures database service is up before app
