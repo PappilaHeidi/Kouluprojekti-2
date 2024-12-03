@@ -17,6 +17,8 @@ ENV PYTHONPATH=/app/src
 
 # Expose the API port
 EXPOSE 8082
+EXPOSE 8081
 
 # Start the FastAPI app using Uvicorn
 CMD ["uvicorn", "database_api:app", "--host", "0.0.0.0", "--port", "8081"]
+
