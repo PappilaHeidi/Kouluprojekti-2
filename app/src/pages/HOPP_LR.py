@@ -7,12 +7,17 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
 # Asetetaan API-osoite
-api_url = "http://localhost:8082/get/silver/hopp"
+api_url = "http://database:8081/get/silver/hopp"
 
 @st.cache_data
 def fetch_data():
     """Hakee datan REST-API:n kautta ja käsittelee sen."""
-    response = requests.get(api_url)
+    try:
+        response = requests.get(api_url)
+    except Exception as e:
+        print("NOT GOOD: ", e)
+        raise Exception("shutting down!!!", e)
+
     if response.status_code == 200:
         data = pd.DataFrame(response.json())
         # Määritä numeeriset sarakkeet (kysymykset 1-22)
@@ -26,7 +31,7 @@ def fetch_data():
         return data, numeric_columns, selected_units
     else:
         st.error(f"Virhe haettaessa dataa: {response.status_code}")
-        response.raise_for_status()
+        #response.raise_for_status()
 
 def sort_quarters(df):
     """Järjestää vuosineljännekset oikeaan järjestykseen."""
@@ -87,7 +92,8 @@ def create_plotly_chart(data, selected_unit, selected_question):
         # Muodosta X ja y
         X = np.arange(avg_data.shape[0]).reshape(-1, 1)
         y = avg_data[selected_question]
-
+        st.dataframe(X)
+        st.dataframe(y)
         # Lineaarinen regressiomalli
         model = LinearRegression()
         model.fit(X, y)
@@ -96,6 +102,8 @@ def create_plotly_chart(data, selected_unit, selected_question):
         last_quarter = avg_data['quarter'].iloc[-1]
         future_quarters = generate_future_quarters(last_quarter, 5)
         future_X = np.arange(len(X), len(X) + len(future_quarters)).reshape(-1, 1)
+        st.write(future_quarters)
+        st.write(future_X)
         predictions = model.predict(future_X)
 
         # Luo Plotly-kaavio

@@ -4,7 +4,7 @@ import requests
 import plotly.graph_objs as plt
 
 # Asetetaan API-osoite
-api_url = "http://localhost:8082/get/silver/hopp"
+api_url = "http://database:8081/get/silver/hopp"
 
 @st.cache_data
 def fetch_data():
