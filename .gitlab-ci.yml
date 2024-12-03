@@ -1,0 +1,22 @@
+image: python:3.10  # Käytetään Pythonin Docker-kuvaa
+
+stages: 
+  - deploy
+
+pages:
+  stage: deploy
+  script:
+    - pip install mkdocs mkdocs-material  # Asennetaan MkDocs ja materiaaliteemat
+    - pip install mkdocs-awesome-pages-plugin # Awesome plugin
+    - mkdocs build  --config-file diary/docs/mkdocs.yml --site-dir public # Rakennetaan dokumentaatio
+    - mkdir -p public  # Luo public-kansio, jos sitä ei ole
+    - cp -r diary/docs/public/* public/  # Kopioi sisällön juuren public-kansioon
+    - ls -l public
+  pages: true
+  artifacts:
+    paths:
+      - public  # GitLab Pages käyttää tätä kansiota julkaisua varten
+  tags:
+    - docker
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "lisayksia"'  # Ajetaan vain, kun muutoksia pusketaan lisayksia-haaraan

@@ -46,7 +46,17 @@ Tiimi aloitti projektin ensimmäisen sprintin keskittymällä datan käsittelyn 
 
 ## **Kuvia**
 
-lisään myöhemmin...
+![HOPP](../images/HOPP_kuva.png)
+**Kuva 1:** Kuvaaja esittää, kuinka hoitajat ja lääkärit toimivat hoitoon liittyvissä asioissa. Käytetty HOPP-dataa.
+
+![NES](../images/NES_kuva.png)
+**Kuva 2:** Kuvaaja esittää kansallisia keskiarvoja eri kysymyksille. Käytetty NES-dataa.
+
+![INGESTION](../images/ingestointi.png)
+**Kuva 3:** Kuvassa näkyy ingestointi prosessi, jossa raakadataa siirretään tietokantaan (CosmosDB).
+
+![SPRINTTI1](../images/sprintti1.png)
+**Kuva 4:** Kuvassa näkyvät GitLabin Burndown- ja Burnup-kaaviot, jotka sisältävät sprintin aikana luodut issuet.
 
 ## **Seuraavaksi**
 
