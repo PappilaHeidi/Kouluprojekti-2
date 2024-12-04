@@ -1,4 +1,3 @@
-
 # Ingestion Tool
 
 Buildaa docker-kontit
