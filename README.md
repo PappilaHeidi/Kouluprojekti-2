@@ -32,7 +32,7 @@ PROJECT_SIGMA/
 │   │   ├── main_page.py           # Streamlit main page
 │   │   └── utils.py               # Utility functions for streamlit
 │   ├── Dockerfile                 # Dockerfile for Streamlit container
-|   └──  README.md                 # Instructions for Streamlit
+│   └──  README.md                 # Instructions for Streamlit
 │
 ├── data/
 │   ├── HOPP/                      # HOPP Excel data
@@ -43,9 +43,9 @@ PROJECT_SIGMA/
 │
 ├── database/                      # Container 2: CosmosDB Query service
 │   ├── Dockerfile                 # Dockerfile for database container
-|   ├── README.md
-|   ├── db_templates/              # SQL templates used for querying
-|   |   └── bronze.sql             # Bronze template
+│   ├── README.md
+│   ├── db_templates/              # SQL templates used for querying
+│   |   └── bronze.sql             # Bronze template
 │   ├── src/                       # Source code for database query service
 │   │   ├── __init__.py
 │   │   ├── connection_tool.py     # Connection module to database
