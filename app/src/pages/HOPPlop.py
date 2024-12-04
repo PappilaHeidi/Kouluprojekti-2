@@ -113,3 +113,4 @@ def create_line_race_chart(unit_avg, national_avg, selected_question):
 
 # Näytä interaktiivinen kaavio
 st.plotly_chart(create_line_race_chart(unit_avg, national_avg, selected_question), use_container_width=True)
+
