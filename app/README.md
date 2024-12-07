@@ -1,6 +1,6 @@
 # Streamlitin käyttöönotto
 
-#### Streamlit-sovellus, jolla visualisoidaan ja analysoidaan dataa.
+#### Streamlit-sovellus datan visuaalisointiin, analysointiin, siirtämiseen ja tutkimiseen.
 
 ## Buildaa Docker-kontit
 1. Rakenna kaikki tarvittavat Docker-kontit komennolla:
