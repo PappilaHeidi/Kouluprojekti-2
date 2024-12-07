@@ -72,14 +72,15 @@ def prepare_features(data, question, unit):
     features = pd.DataFrame()
     features['value'] = unit_data[question]
     
-    # Täytä puuttuvat arvot edellisillä arvoilla
+    # Täytä puuttuvat arvot edellisellä arvolla
     features['value'] = features['value'].fillna(method='ffill')
     
-    # Luo lag-featuret vain jos on tarpeeksi dataa
+    # Tallenna viimeisen 3 kvartaalin keskiarvo jos mahdollista
+    features['current_avg'] = features['value'].rolling(window=3, min_periods=1).mean()
+    
+    # Luo lag-featuret, vaadi vain yksi edellinen arvo
     if len(features) >= 2:
         features['lag1'] = features['value'].shift(1)
-        if len(features) >= 3:
-            features['lag2'] = features['value'].shift(2)
     
     # Lisää trendi
     features['trend'] = range(len(features))
@@ -91,7 +92,8 @@ def prepare_features(data, question, unit):
     # Poista NaN-rivit
     features = features.dropna()
     
-    return features if len(features) >= 3 else None
+    # Vaadi vähintään 2 datapistettä (aiemman 3 sijaan)
+    return features if len(features) >= 2 else None
 
 def sort_quarters(df):
     """Järjestää vuosineljännekset oikeaan järjestykseen."""
@@ -213,39 +215,43 @@ def create_bar_chart(data, numeric_columns, selected_question):
     fig = plt.Figure(data=traces, layout=layout)
     return fig
 
-def train_prediction_model(features, threshold=4.5):  # Kynnysarvo 4.5
-    """Kouluta ennustusmalli."""
-    if features is None or len(features) < 3:
+def train_prediction_model(features, threshold=4.5):
+    """Kouluta ennustusmalli optimoiduilla parametreilla."""
+    if features is None or len(features) < 2:
         return None, None
         
-    # Määritä target (käytä nyt kynnysarvoa 4.5)
+    # Määritä target (käytä kynnysarvoa 4.5)
     y = (features['value'] >= threshold).astype(int)
     
     # Tarkista onko tarpeeksi vaihtelua
     if len(y.unique()) < 2:
         return None, None
     
-    # Poista ylimääräiset sarakkeet
-    X = features.drop(['value', 'norm_value'], axis=1)
+    # Käytä kaikkia featureita paitsi 'value' ja 'norm_value'
+    feature_cols = [col for col in features.columns if col not in ['value', 'norm_value']]
+    X = features[feature_cols]
     
     # Skaalaa featuret
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     
     try:
-        # Kouluta malli
+        # Kouluta malli optimoiduilla parametreilla
         model = LogisticRegression(
-            random_state=42, 
+            random_state=42,
+            max_iter=5000,
+            C=0.8,
             class_weight='balanced',
-            max_iter=2000,
-            solver='lbfgs'
+            solver='liblinear',
+            penalty='l1'
         )
         model.fit(X_scaled, y)
         return model, scaler
-    except Exception:
+    except Exception as e:
+        st.warning(f"Mallin koulutus epäonnistui: {str(e)}")
         return None, None
 
-def predict_next_values(data, numeric_columns, selected_units, threshold=4.5):  # Kynnysarvo = 4.5
+def predict_next_values(data, numeric_columns, selected_units, threshold=4.5):
     """Ennusta seuraavan kvartaalin arvot kaikille yksiköille ja kysymyksille."""
     predictions = {}
     
@@ -253,7 +259,8 @@ def predict_next_values(data, numeric_columns, selected_units, threshold=4.5):  
         predictions[unit] = {}
         unit_data = data[data['unit_code'] == unit]
         
-        if len(unit_data) < 3:
+        # Vaadi vähintään 2 datapistettä
+        if len(unit_data) < 2:
             continue
             
         for question in numeric_columns:
@@ -272,26 +279,34 @@ def predict_next_values(data, numeric_columns, selected_units, threshold=4.5):  
                 latest_features = features.iloc[-1:].copy()
                 latest_features['trend'] += 1
                 
+                # Säilytä kaikki samat sarakkeet kuin koulutusvaiheessa
+                X_features = [col for col in features.columns if col not in ['value', 'norm_value']]
+                X_pred = latest_features[X_features]
+                
                 # Tee ennuste
-                X_pred = latest_features.drop(['value', 'norm_value'], axis=1)
                 X_pred_scaled = scaler.transform(X_pred)
                 
-                # Tallenna ennuste ja nykytila
-                current_value = features['value'].iloc[-1]
+                # Tallenna ennuste ja nykyarvo (1-3 kk keskiarvo)
+                current_value = features['current_avg'].iloc[-1]
                 pred_proba = model.predict_proba(X_pred_scaled)[0][1]
+                
+                # Laske käytettyjen kvarttaalien määrä keskiarvossa
+                used_quarters = min(3, len(features))
                 
                 predictions[unit][question] = {
                     'current': current_value,
                     'pred_proba': pred_proba,
-                    'trend': 'up' if pred_proba > 0.5 else 'down'
+                    'trend': 'up' if pred_proba > 0.5 else 'down',
+                    'quarters_used': used_quarters
                 }
                 
             except Exception as e:
+                st.warning(f"Virhe käsiteltäessä kysymystä {question}: {str(e)}")
                 continue
     
     return predictions
 
-def display_predictions(predictions):
+def display_predictions(predictions, data):
     """Näytä ennusteet käyttäjäystävällisessä muodossa."""
     st.header("Ennusteet seuraavalle kvartaalille")
     st.write(f"Todennäköisyys että arvo ylittää 4.5")
@@ -304,26 +319,38 @@ def display_predictions(predictions):
         for question, pred in predictions[unit].items():
             if pred is not None:
                 trend_symbol = '↑' if pred['trend'] == 'up' else '↓'
-                trend_color = 'green' if pred['trend'] == 'up' else 'red'
                 
                 pred_data.append({
                     'Kysymys': question,
-                    'Nykyarvo': f"{pred['current']:.2f}",
+                    f'Nykyarvo ({pred["quarters_used"]}kk ka)': f"{pred['current']:.2f}",
                     'Ennuste': trend_symbol,
                     'Todennäköisyys ≥4.5': f"{pred['pred_proba']*100:.1f}%"
                 })
         
         if pred_data:
             pred_df = pd.DataFrame(pred_data)
-            st.dataframe(
-                pred_df.style.applymap(
-                    lambda x: f'color: {trend_color}' if x in ['↑', '↓'] else '',
-                    subset=['Ennuste']
-                ),
-                hide_index=True
+            
+            # Luodaan style funktio joka palauttaa värin trendin mukaan
+            def style_arrow(val):
+                if val == '↑':
+                    return 'color: green'
+                elif val == '↓':
+                    return 'color: red'
+                return ''
+            
+            # Käytä style_arrow-funktiota vain Ennuste-sarakkeeseen
+            styled_df = pred_df.style.applymap(
+                style_arrow,
+                subset=['Ennuste']
             )
+            
+            st.dataframe(styled_df, hide_index=True)
         else:
             st.write("Ei riittävästi dataa ennusteiden tekemiseen.")
+            unit_data = data[data['unit_code'] == unit]
+            st.write(f"Saatavilla oleva data yksikölle {unit}:")
+            st.write(f"Rivejä: {len(unit_data)}")
+            st.write("Kvarttaalit:", unit_data['quarter'].unique())
 
 def main():
     st.title("HOPPlop Logistinen Regressio hässäkkä homma juttu")
@@ -350,7 +377,7 @@ def main():
     predictions = predict_next_values(data, numeric_columns, selected_units)
     
     # Näytä ennusteet
-    display_predictions(predictions)
+    display_predictions(predictions, data)
 
 if __name__ == "__main__":
     main()
