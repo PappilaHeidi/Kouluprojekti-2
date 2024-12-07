@@ -27,12 +27,11 @@ PROJECT_SIGMA/
 │   │   ├── pages/
 │   │   │   ├── HOPP_LR.py         # Contains Linear Regression analysis for HOPP data
 │   │   │   ├── HOPPlop.py         # Contains interactive visualisation for HOPP data
-│   │   │   ├── streamlit_app.py
-│   │   │   └── .webp              # Main page image
-│   │   ├── main_page.py           # Streamlit main page
+│   │   │   └── 🔍Data.py
+│   │   ├── 🏠Etusivu.py           # Streamlit main page
 │   │   └── utils.py               # Utility functions for streamlit
 │   ├── Dockerfile                 # Dockerfile for Streamlit container
-│   └──  README.md                 # Instructions for Streamlit
+│   └── README.md                 # Instructions for Streamlit
 │
 ├── data/
 │   ├── HOPP/                      # HOPP Excel data
