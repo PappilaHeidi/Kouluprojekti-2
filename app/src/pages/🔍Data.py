@@ -31,6 +31,7 @@ if uploaded_file is not None:
         file_name=uploaded_file.name,
         mime="text/csv"
     )
+    st.warning("HUOM! INGESTOINTI LATAA DATAN ANALYTICS PILVEEN JOKA VAIKUTTAA ANALYTIIKKAAN")
 
     if st.button("Ingest Data"):
         # Trigger the ingestion process via the API in the ingestion container
@@ -47,6 +48,8 @@ endpoint_bronze_hopp = "http://database:8081/get/bronze/hopp"
 endpoint_bronze_nes = "http://database:8081/get/bronze/nes"
 endpoint_silver_hopp = "http://database:8081/get/silver/hopp"
 endpoint_silver_nes = "http://database:8081/get/silver/nes"
+endpoint_gold_hopp = "http://database:8081/get/gold/hopp"
+endpoint_gold_nes = "http://database:8081/get/gold/nes"
 
 # Funktio hakee datan apista
 def fetch_data(endpoint, dataset_name):
@@ -89,6 +92,10 @@ with col2:
 with col3:
     st.header("🥇 Kultataso")
     st.write("Valitse HOPP tai NES")
+    if st.button("Fetch Gold HOPP Data"):
+        fetch_data(endpoint_gold_hopp, "Gold HOPP")
+    if st.button("Fetch Gold NES Data"):
+        fetch_data(endpoint_bronze_nes, "Gold NES")
 
 st.header("🔍 SQL Kyselyjä")
 st.markdown("""
