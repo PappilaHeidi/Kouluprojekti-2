@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Data Pipeline API")
 silver_pipeline = PipelineManager('bronze', 'silver')
+gold_pipeline = PipelineManager('silver', 'gold')
 
 # What medallion layers are in use
 VALID_LAYERS = ['bronze', 'silver', 'gold']
@@ -84,10 +85,14 @@ async def process_data(layer: str, source: str):
     layer = layer.lower()
     source = source.lower()
     
-    if layer != 'silver':
-        raise HTTPException(status_code=400, detail="Only silver layer processing is supported")
+    if layer != 'silver' and layer != 'gold':
+        raise HTTPException(status_code=400, detail="Only silver and gold layer processing is supported")
     if source not in VALID_SOURCES:
         raise HTTPException(status_code=400, detail="Invalid source. Use 'hopp' or 'nes'")
         
     logger.info(f"Processing {source} data for {layer} layer")
-    return await silver_pipeline.process_data(source, layer)
+    if layer == 'silver':
+        return await silver_pipeline.process_data(source, layer)
+
+    if layer == 'gold':
+        return await gold_pipeline.process_data(source, layer)

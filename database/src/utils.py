@@ -60,6 +60,16 @@ class MojovaModels:
                     )
                     print(f"Generated query: {query_template}")
                     return query_template
+                
+                case 'gold_hopp':
+                    sql_template = self.env.get_template('gold.sql')
+                    query_template = sql_template.render(
+                        table_name="c",
+                        filter_column="c['/medallion']",
+                        filter_value="gold_hopp"
+                    )
+                    return query_template
+                
                 case _:
                     print(f"Unknown template: {template}")
                     return None
