@@ -25,6 +25,7 @@ if uploaded_file is not None:
         file_name=uploaded_file.name,
         mime="text/csv"
     )
+    st.warning("HUOM! INGESTOINTI LATAA DATAN ANALYTICS PILVEEN JOKA VAIKUTTAA ANALYTIIKKAAN")
 
     if st.button("Ingest Data"):
         # Trigger the ingestion process via the API in the ingestion container
@@ -39,7 +40,7 @@ if uploaded_file is not None:
 # FastAPI endpoint URL for bronze hopp
 endpoint_bronze_hopp = "http://database:8081/get/bronze/hopp"
 endpoint_bronze_nes = "http://database:8081/get/bronze/nes"
-
+endpoint_gold_hopp = "http://database:8081/get/gold/hopp"
 # Streamlit button
 if st.button("Fetch Bronze Hopp Data"):
     # Make the GET request
@@ -66,6 +67,21 @@ if st.button("Fetch Bronze NES Data"):
         st.dataframe(data, height=1000)
     else:
         st.error(f"Error: {response.status_code}, {response.text}")
+
+## GOLD HOPP QUERY ##
+if st.button("Fetch Gold Hopp Data"):
+    # Make the GET request
+    response = requests.get(endpoint_gold_hopp)
+
+    # Handle the response
+    if response.status_code == 200:
+        json_data = response.json()
+        # Display data if the request was successful
+        data = pd.DataFrame(json_data)  # Assuming the endpoint returns JSON data
+        st.dataframe(data, height=1000)
+    else:
+        st.error(f"Error: {response.status_code}, {response.text}")
+
 
 st.title("🛝 SQL Leikkikenttä 🛝")
 
