@@ -122,7 +122,11 @@ def fetch_data_for_sql(endpoint, dataset_name):
 if dataset_option == "💊 HOPP":
     st.header(f"{dataset_option} Data")
     st.write("Tämä kysely suoritetaan vain HOPP datalle")
-    df = fetch_data_for_sql(endpoint_silver_hopp, "HOPP")
+    tier = st.radio("Valitse taso:", ["Silver", "Gold"])
+    if tier == "Silver":
+        df = fetch_data_for_sql(endpoint_silver_hopp, "HOPP")
+    if tier == "Gold":
+        df = fetch_data_for_sql(endpoint_gold_hopp, "HOPP")
 # Jos NES niin näkyy vain NES datasetin sarakkeet yms.
 elif dataset_option == "🩺 NES":
     st.header(f"{dataset_option} Data")

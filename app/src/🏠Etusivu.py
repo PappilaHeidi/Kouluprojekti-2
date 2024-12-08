@@ -2,7 +2,7 @@ import streamlit as st
 
 # Päänäkymä
 st.set_page_config(
-    page_title="Pääsivu",
+    page_title="Etusivu",
     page_icon="🏠",
     layout="wide"
 )
