@@ -1,2 +1,13 @@
 [server]
 runOnSave = true
+
+[theme]
+primaryColor = "#00838F"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#E3F2FD"
+textColor = "#262730"
+font = "sans serif"
+
+[theme.button]
+backgroundColor = "#98D8C8"
+textColor = "#FFFFFF"
