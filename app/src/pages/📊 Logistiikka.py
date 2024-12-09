@@ -7,6 +7,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report
 
+
+st.set_page_config(
+    page_title= "Logistiikkaa",
+    page_icon= "📊",
+    layout= "wide"
+)
+
 # Asetetaan API-osoite
 api_url = "http://database:8081/get/silver/hopp"
 

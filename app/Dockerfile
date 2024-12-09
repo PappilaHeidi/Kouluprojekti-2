@@ -12,11 +12,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ./app/src /app/src
 COPY ./data/ /app/data/
 COPY ./notebooks/playground /app/notebooks/playground
+COPY ./.streamlit/config.toml /root/.streamlit/config.toml
 
 # Set the PYTHONPATH to make `src` available for imports
 ENV PYTHONPATH=/app/src
 
 
 # Set entrypoint for Streamlit
-CMD ["streamlit", "run", "/app/src/main_page.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "/app/src/⭐️ Pääsivu.py", "--server.port=8501", "--server.address=0.0.0.0"]
 

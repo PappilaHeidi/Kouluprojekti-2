@@ -6,6 +6,14 @@ from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
+
+st.set_page_config(
+    page_title= "Lineaarisuus",
+    page_icon= "📉",
+    layout= "wide"
+)
+
+
 # Asetetaan API-osoite
 api_url = "http://database:8081/get/silver/hopp"
 

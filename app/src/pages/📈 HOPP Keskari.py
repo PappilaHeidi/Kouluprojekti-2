@@ -3,6 +3,27 @@ import pandas as pd
 import requests
 import plotly.graph_objs as plt
 
+st.set_page_config(
+    page_title= "Käppyrää",
+    page_icon= "📈",
+    layout= "wide"
+)
+
+st.markdown("""
+# HOPPlop Interaktiivinen Visualisointi
+
+Tämä työkalu näyttää terveydenhuollon yksiköiden (AIKTEHOHO, EALAPSAIK, ENSIHOITO) palautedatan vertailun vuosineljänneksittäin.
+
+### Ominaisuudet:
+- Vertaa yksiköiden tuloksia kansalliseen keskiarvoon
+- Interaktiivinen viivakaavio kysymyskohtaisesti
+- Värikoodatut viivat eri yksiköille
+- Tarkemmat arvot näkyvät viemällä hiiren datapisteiden päälle
+
+### Käyttö:
+Valitse haluamasi kysymys pudotusvalikosta nähdäksesi sen tulokset eri yksiköissä ajan mittaan. Kansallinen keskiarvo näytetään mustalla katkoviivalla.
+""")
+
 # Asetetaan API-osoite
 api_url = "http://database:8081/get/silver/hopp"
 
@@ -48,9 +69,6 @@ def calculate_averages(data, numeric_columns):
     national_avg_reset = sort_quarters(national_avg).reset_index()
     
     return unit_avg_reset, national_avg_reset
-
-# Streamlit-sovelluksen UI
-st.title("HOPPlop Interaktiivinen Visualisointi")
 
 # Hakee ja käsittelee datan
 data, numeric_columns, selected_units = fetch_data()
@@ -113,4 +131,3 @@ def create_line_race_chart(unit_avg, national_avg, selected_question):
 
 # Näytä interaktiivinen kaavio
 st.plotly_chart(create_line_race_chart(unit_avg, national_avg, selected_question), use_container_width=True)
-
