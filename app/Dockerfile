@@ -19,5 +19,5 @@ ENV PYTHONPATH=/app/src
 
 
 # Set entrypoint for Streamlit
-CMD ["streamlit", "run", "/app/src/⭐️ Pääsivu.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "/app/src/🏠Etusivu.py", "--server.port=8501", "--server.address=0.0.0.0"]
 
