@@ -75,4 +75,9 @@ st.header("⏱️ Clockify")
 st.markdown("Tässä Mojovien projektin yhteistunnit")
 st.markdown('<iframe src="https://app.clockify.me/shared/673c996fa5b53c67d258d043" width="1000" height="600"></iframe>', unsafe_allow_html=True)
 
-# Tänne GitLab Stats
+# GitLab stats
+
+st.header("🗂️ GitLab Stats")
+
+st.markdown("TODO")
+

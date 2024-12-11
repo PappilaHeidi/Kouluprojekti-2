@@ -52,6 +52,7 @@ endpoint_gold_hopp = "http://database:8081/get/gold/hopp"
 endpoint_gold_nes = "http://database:8081/get/gold/nes"
 
 # Funktio hakee datan apista
+@st.cache_data
 def fetch_data(endpoint, dataset_name):
     response = requests.get(endpoint)
     if response.status_code == 200:
