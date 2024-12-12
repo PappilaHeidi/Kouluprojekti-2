@@ -10,7 +10,11 @@ st.set_page_config(
     layout= "wide"
 )
 
-st.title("⚙️ Data työkalut")
+st.title("⚙️ Datatyökalut")
+st.markdown("""
+            Tältä sivulta löytyy erilaisia datatyökaluja, joiden avulla voidaan ingestoida ja tarkastella dataa.
+""")
+
 st.header("🛢️☁️ Datan ingestointi → CosmosDB")
 st.markdown("""
             Tällä työkalulla voit ladata `XLSX-tiedostoja` ja siirtää datan `CosmosDB-tietokantaan`.
@@ -123,16 +127,24 @@ def fetch_data_for_sql(endpoint, dataset_name):
 if dataset_option == "💊 HOPP":
     st.header(f"{dataset_option} Data")
     st.write("Tämä kysely suoritetaan vain HOPP datalle")
-    tier = st.radio("Valitse taso:", ["Silver", "Gold"])
-    if tier == "Silver":
+    tier = st.radio("Valitse taso:", ["🥉 Bronze", "🥈 Silver", "🥇 Gold"])
+    if tier == "🥉 Bronze":
+        df = fetch_data_for_sql(endpoint_bronze_hopp, "HOPP")
+    if tier == "🥈 Silver":
         df = fetch_data_for_sql(endpoint_silver_hopp, "HOPP")
-    if tier == "Gold":
+    if tier == "🥇 Gold":
         df = fetch_data_for_sql(endpoint_gold_hopp, "HOPP")
 # Jos NES niin näkyy vain NES datasetin sarakkeet yms.
 elif dataset_option == "🩺 NES":
     st.header(f"{dataset_option} Data")
     st.write("Tämä kysely suoritetaan vain NES datalle")
-    df = fetch_data_for_sql(endpoint_silver_nes, "NES")
+    tier = st.radio("Valitse taso:", ["🥉 Bronze", "🥈 Silver", "🥇 Gold"])
+    if tier == "🥉 Bronze":
+        df = fetch_data_for_sql(endpoint_bronze_nes, "NES")
+    if tier == "🥈 Silver":
+        df = fetch_data_for_sql(endpoint_silver_nes, "NES")
+    if tier == "🥇 Gold":
+        df = fetch_data_for_sql(endpoint_gold_nes, "NES")
 
 if df is not None:
     # SQLITE yhteys; memory käyttää RAM, jolloin ei tarvii luoda omaa tiedostoa kannalle

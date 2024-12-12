@@ -4,7 +4,6 @@ import pandas as pd
 from scipy import stats
 import matplotlib.pyplot as plt
 import numpy as np
-import altair as alt
 
 st.set_page_config(
     page_title= "Tilastoja",
@@ -14,9 +13,7 @@ st.set_page_config(
 
 st.title("📟 Tilastoja")
 st.markdown("""
-            Tällä sivulla näkyy HOPP ja NES datan tilastoja.
-            
-            Tilastot on luotu Gold-tason datalla.
+            Tältä sivulta löytyy erilaisia
 """)
 
 # Haetaan APIsta dataa
@@ -58,29 +55,41 @@ if df is not None:
     # Varmitstetaan että kvarttaalit ovat uniikkeja (Vaikka ne on jo)
     kvarttaalit = df['quarter'].unique()
     # Voidaan valita kysymys
-    
-    st.header("Keskiarvojen visualisointi")
 
     # Kainuun ja Muun Suomen tietojen erottaminen kvartaalikohtaisesti
     combined_data_kainuu = kainuu[['quarter', 'datajoukko'] + kysymykset]
     combined_data_muu_suomi = muu_suomi[['quarter', 'datajoukko'] + kysymykset]
-    
+
     # Streamlitin visualisointi
-    st.title("Kysymysten Keskiarvot Kvartaaleittain Kainuulle ja Muulle Suomelle")
+    st.header("⚖️ Kainuun ja Kansallisten kysymysten keskiarvot kvartaaleittain")
 
-    # Kainuun visualisointi kvartaaleittain
-    st.subheader("Kainuun kysymysten keskiarvot")
-    kainuu_long = pd.melt(combined_data_kainuu, id_vars=['quarter', 'datajoukko'], value_vars=kysymykset,
-                          var_name='Kysymys', value_name='Keskiarvo')
-    st.bar_chart(kainuu_long, x="quarter", y="Keskiarvo", color="Kysymys", use_container_width=True)
+    st.markdown("""
+    Tässä analyysissä vertaillaan **Kainuun** ja **Kansallisten** kysymysten keskiarvoja kvartaaleittain. 
     
-    # Muun Suomen visualisointi kvartaaleittain
-    st.subheader("Muun Suomen kysymysten keskiarvot")
-    muu_suomi_long = pd.melt(combined_data_muu_suomi, id_vars=['quarter', 'datajoukko'], value_vars=kysymykset,
-                             var_name='Kysymys', value_name='Keskiarvo')
-    st.bar_chart(muu_suomi_long, x="quarter", y="Keskiarvo", color="Kysymys", use_container_width=True)
+    Keskiarvot on laskettu kyselyn tuloksista ja ne kuvaavat **Kainuun** ja **muun Suomen** asiakastyytyväisyyttä.
 
-    st.header("🌲 Kainuu vs muu Suomi 🇫🇮")
+    **Kvartaali**-tason analyysi havainnollistaa, miten kysymysten vastaukset kehittyvät eri aikaväleillä.
+
+    Valitse alla oleva kysymys nähdäksesi sen keskiarvot eri kvartaaleilla.
+""")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        # Kainuun visualisointi kvartaaleittain
+        st.subheader("🌲 Kainuun keskiarvot")
+        kainuu_long = pd.melt(combined_data_kainuu, id_vars=['quarter', 'datajoukko'], value_vars=kysymykset,
+                            var_name='Kysymys', value_name='Keskiarvo')
+        st.bar_chart(kainuu_long, x="quarter", y="Keskiarvo", color="Kysymys", use_container_width=True, horizontal=True)
+    
+    with col2:
+        # Muun Suomen visualisointi kvartaaleittain
+        st.subheader("🇫🇮 Kansalliset keskiarvot")
+        muu_suomi_long = pd.melt(combined_data_muu_suomi, id_vars=['quarter', 'datajoukko'], value_vars=kysymykset,
+                                var_name='Kysymys', value_name='Keskiarvo')
+        st.bar_chart(muu_suomi_long, x="quarter", y="Keskiarvo", color="Kysymys", use_container_width=True, horizontal=True)
+
+    st.header("🌲 Kainuu vs Kansallinen 🇫🇮")
 
     st.markdown("""
                 Tässä analyysissä vertaillaan **Kainuun** ja **muun Suomen** *HOPP*-datan asiakastyytyväisyyden keskiarvoja, ja käytämme **T-testiä** arvioidaksemme, ovatko erot merkittäviä.
