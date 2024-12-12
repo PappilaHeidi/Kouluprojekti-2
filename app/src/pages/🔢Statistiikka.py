@@ -3,6 +3,8 @@ import requests
 import pandas as pd
 from scipy import stats
 import matplotlib.pyplot as plt
+import numpy as np
+import altair as alt
 
 st.set_page_config(
     page_title= "Tilastoja",
@@ -15,20 +17,6 @@ st.markdown("""
             Tällä sivulla näkyy HOPP ja NES datan tilastoja.
             
             Tilastot on luotu Gold-tason datalla.
-""")
-
-st.header("🌲 Kainuu vs muu Suomi 🇫🇮")
-
-st.markdown("""
-            Tässä analyysissä vertaillaan **Kainuun** ja **muun Suomen** *HOPP*-datan asiakastyytyväisyyden keskiarvoja, ja käytämme **T-testiä** arvioidaksemme, ovatko erot merkittäviä.
-
-            **T-testi** on tilastollinen testi, jolla voidaan vertailla kahden ryhmän, kuten **Kainuun** ja **muun Suomen**, välillä olevia eroja.
-
-            **T-arvo** kuvaa kahden ryhmän välisen eron suuruuden verrattuna ryhmien sisäiseen vaihteluun. **P-arvo** kertoo, kuinka todennäköistä on, että tulokset ovat syntyneet sattumalta.
-
-            Jos **T-arvo** on suuri ja **P-arvo** on pieni, ryhmien ero on suuri ja tilastollisesti merkitsevä.
-
-            Valitse alla analysoitava kysymys, jolloin sen kysymyksen tulokset näytetään.
 """)
 
 # Haetaan APIsta dataa
@@ -63,13 +51,50 @@ if df is not None:
     df['11_hoitajat_huolehtivat_etteivat_hoito_ja_tai_tutkimukset_aiheuttaneet_minulle_noloja_tai_kiusallisia_tilanteita'] = df['11_hoitajat_huolehtivat_etteivat_hoito_ja_tai_tutkimukset_aiheuttaneet_minulle_noloja_tai_kiusallisia_tilanteita'].fillna(kainuu_mean_11)
     # Valitaan vain nämä sarakkeet
     kysymykset = [col for col in df.columns if col not in ['datajoukko', 'quarter']]
-    # Voidaan valita kysymys
-    kysymys = st.selectbox("Valitse kysymys", kysymykset)
     # Kainuun datajoukko
     kainuu = df[df['datajoukko'] == 'kainuu']
     # Muun Suomen datajoukko
     muu_suomi = df[df['datajoukko'] == 'kooste']
+    # Varmitstetaan että kvarttaalit ovat uniikkeja (Vaikka ne on jo)
+    kvarttaalit = df['quarter'].unique()
+    # Voidaan valita kysymys
+    
+    st.header("Keskiarvojen visualisointi")
 
+    # Kainuun ja Muun Suomen tietojen erottaminen kvartaalikohtaisesti
+    combined_data_kainuu = kainuu[['quarter', 'datajoukko'] + kysymykset]
+    combined_data_muu_suomi = muu_suomi[['quarter', 'datajoukko'] + kysymykset]
+    
+    # Streamlitin visualisointi
+    st.title("Kysymysten Keskiarvot Kvartaaleittain Kainuulle ja Muulle Suomelle")
+
+    # Kainuun visualisointi kvartaaleittain
+    st.subheader("Kainuun kysymysten keskiarvot")
+    kainuu_long = pd.melt(combined_data_kainuu, id_vars=['quarter', 'datajoukko'], value_vars=kysymykset,
+                          var_name='Kysymys', value_name='Keskiarvo')
+    st.bar_chart(kainuu_long, x="quarter", y="Keskiarvo", color="Kysymys", use_container_width=True)
+    
+    # Muun Suomen visualisointi kvartaaleittain
+    st.subheader("Muun Suomen kysymysten keskiarvot")
+    muu_suomi_long = pd.melt(combined_data_muu_suomi, id_vars=['quarter', 'datajoukko'], value_vars=kysymykset,
+                             var_name='Kysymys', value_name='Keskiarvo')
+    st.bar_chart(muu_suomi_long, x="quarter", y="Keskiarvo", color="Kysymys", use_container_width=True)
+
+    st.header("🌲 Kainuu vs muu Suomi 🇫🇮")
+
+    st.markdown("""
+                Tässä analyysissä vertaillaan **Kainuun** ja **muun Suomen** *HOPP*-datan asiakastyytyväisyyden keskiarvoja, ja käytämme **T-testiä** arvioidaksemme, ovatko erot merkittäviä.
+
+                **T-testi** on tilastollinen testi, jolla voidaan vertailla kahden ryhmän, kuten **Kainuun** ja **muun Suomen**, välillä olevia eroja.
+
+                **T-arvo** kuvaa kahden ryhmän välisen eron suuruuden verrattuna ryhmien sisäiseen vaihteluun. **P-arvo** kertoo, kuinka todennäköistä on, että tulokset ovat syntyneet sattumalta.
+
+                Jos **T-arvo** on suuri ja **P-arvo** on pieni, ryhmien ero on suuri ja tilastollisesti merkitsevä.
+
+                Valitse alla analysoitava kysymys, jolloin sen kysymyksen tulokset näytetään.
+    """)
+
+    kysymys = st.selectbox("Valitse kysymys", kysymykset)
     # Käytetään Scipy moduulia laskemaan T-testi
     t_stat, p_value = stats.ttest_ind(kainuu[kysymys], muu_suomi[kysymys])
     
@@ -112,9 +137,25 @@ if df is not None:
     else:
         st.success("TULOS: Ero Kainuun ja muun Suomen välillä ei ole tilastollisesti merkitsevä.")
 
-col1, col2 = st.columns(2)
-with col1:
-    st.header("🌲 Kainuu")
-
-with col2:
-    st.header("🇫🇮 Suomi")
+# T-jakauman visualisointi
+x = np.linspace(-5, 5, 1000)
+t_dist = stats.t.pdf(x, df=len(kainuu) + len(muu_suomi) - 2)  # t-jakauma
+# Piirretään kaavio matplotlibilla
+fig, ax = plt.subplots(figsize=(10, 6))
+# T-jakauma
+ax.plot(x, t_dist, label="T-jakauma", color='blue')
+# P-arvon alueen korostus (merkittävä alue)
+ax.fill_between(x, 0, t_dist, where=(x >= stats.t.ppf(1 - 0.025, df=len(kainuu) + len(muu_suomi) - 2)), color='red', alpha=0.3, label="P-arvon alue (0.05 ja alle)")
+ax.fill_between(x, 0, t_dist, where=(x <= stats.t.ppf(0.025, df=len(kainuu) + len(muu_suomi) - 2)), color='red', alpha=0.3)
+ax.axvline(x=0, color='black', linestyle='--', label="Hypoteesi 0")
+# Pystysuora viiva t-arvolle
+ax.axvline(x=t_stat, color='black', linestyle='-', label=f'T-arvo ({t_stat:.3f})')
+# Asetetaan otsikko ja selitteet
+ax.set_title(f"T-jakauma ja t-arvo ({kysymys})", fontsize=16)
+ax.set_xlabel("T-arvo", fontsize=12)
+ax.set_ylabel("Todennäköisyyden tiheys", fontsize=12)
+ax.legend()
+# Lisää teksti kaavioon p-arvon läheisyyteen
+ax.text(stats.t.ppf(1 - 0.025, df=len(kainuu) + len(muu_suomi) - 2) + 0.5, 0.1, f'P-arvo: {p_value:.3f}',color='red', fontsize=8, ha='left', va='center')
+# Näytetään kuva Streamlitissä
+st.pyplot(fig)
