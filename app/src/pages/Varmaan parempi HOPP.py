@@ -54,6 +54,8 @@ def load_data():
     
     df = pd.DataFrame(data)
     
+    
+
     # Datan siistiminen
     numeric_columns = [col for col in df.columns if col.split('_')[0].isdigit()]
     df[numeric_columns] = df[numeric_columns].replace('E', np.nan)
@@ -350,3 +352,7 @@ st.markdown("""
 
 *Tarvitsetko apua työkalun käytössä? Ota yhteyttä [tukeen](mailto:support@example.com)*
 """)
+
+st.write("### Kaikki kysymykset:")
+for col in numeric_columns:
+    st.write(f"Kysymys {col.split('_')[0]}: {question_descriptions[col]}")
