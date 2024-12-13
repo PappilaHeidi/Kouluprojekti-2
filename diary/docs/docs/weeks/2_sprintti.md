@@ -50,7 +50,7 @@ Toisessa sprintissä keskityimme Streamlit-sovelluksen rakentamiseen, datan käs
 ![SILVER KÄSITTELY](../images/silver_data.png)
 **Kuva 4:** Kuvassa näkyy esimerkki Python-koodia, jolla luodaan ja käsitellään Silver-tasoa.
 
-![SPRINTTI2](../images/sprintti2.png)
+![SPRINTTI 2](../images/sprintti2.png)
 **Kuva 5:** Kuvassa näkyvät GitLabin Burndown- ja Burnup-kaaviot, jotka sisältävät sprintin aikana luodut issuet.
 
 # **Seuraavaksi**

@@ -32,3 +32,21 @@ Kolmannessa sprintissä keskityimme mallien ennustuksiin ja tämän lisäksi kes
 
 ## **Kuvia**
 
+![ENNUSTUS HOPP](../images/HOPP_ennustus.png)
+**Kuva 1:** Kuvassa näkyy HOPP-datan ennustamista, jonka ennustus muuttuu kysymyksen ja yksikön mukaan.
+
+![GOLD DATA](../images/gold_data.png)
+**Kuva 2:** Kuvassa näkyy esimerkki Python-koodia, jolla luodaan ja käsitellään Gold-tasoa.
+
+![DATA FETCH](../images/data_fetch.png)
+**Kuva 3:** Kuvassa näkyy datan tuontityökalu, jonka avulla voidaan tuoda tietokannasta dataa Streamlitiin.
+
+![GOLD ANALYYSI](../images/gold_analyysi.png)
+**Kuva 4:** Kuvassa näkyy alustettua Gold-tason analyysia, jossa vertaillaan keskiarvoja Kainuun ja Muun Suomen välillä.
+
+![SPRINTTI 3](../images/sprintti3.png)
+**Kuva 5:** Kuvassa näkyvät GitLabin Burndown- ja Burnup-kaaviot, jotka sisältävät sprintin aikana luodut issuet.
+
+## **Seuraavaksi**
+
+Seuraavassa sprintissä on tärkeintä saada koko projekti kasaan ja esitys valmiiksi. Vielä löytyy tehtävää, kuten lisää visualisoitavaa Gold-datasta, mallityökalujen vienti Streamlitiin, loppuraportin laatiminen sekä muiden viimeistelyjen tekeminen. On myös tärkeää saada tehtävänanto toteutettua ja varmistaa, että kaikki vaatimukset täyttyvät.
