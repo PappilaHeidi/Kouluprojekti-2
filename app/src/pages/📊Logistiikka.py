@@ -14,6 +14,26 @@ st.set_page_config(
     layout= "wide"
 )
 
+# Sovelluksen pääotsikko ja kuvaus
+st.markdown("""
+# 📊 HOPP Logistinen Regressioanalyysi
+
+Tämä sovellus analysoi asiakaspalautedataa käyttäen logistista regressiota ja visualisoi tulokset interaktiivisesti.
+
+## 🎯 Analyysin tavoitteet
+- Vertailla yksiköiden suoriutumista eri kysymyksissä
+- Ennustaa todennäköisyyksiä korkeille arvioille (≥4.5)
+- Tunnistaa kehitystrendejä yksiköittäin
+
+## 📈 Visualisoinnin selite
+- Palkit näyttävät yksiköiden keskiarvot kvartaaleittain
+- Musta katkoviiva osoittaa kansallisen keskiarvon
+- Värikoodaus:
+  - 🔵 AIKTEHOHO
+  - 🟢 EALAPSAIK
+  - 🔴 ENSIHOITO
+""")
+
 # Asetetaan API-osoite
 api_url = "http://database:8081/get/silver/hopp"
 
@@ -360,13 +380,28 @@ def display_predictions(predictions, data):
             st.write("Kvarttaalit:", unit_data['quarter'].unique())
 
 def main():
-    st.title("HOPPlop Logistinen Regressio hässäkkä homma juttu")
+    # Pääotsikko on jo lisätty markdownissa ylempänä
 
     # Hakee ja käsittelee datan
     data, numeric_columns, selected_units = fetch_data()
 
+    # Ohjeistus kysymyksen valintaan
+    st.markdown("""
+    ### 🔍 Kysymyksen valinta
+    Valitse alla olevasta valikosta kysymys, jonka tuloksia haluat analysoida:
+    """)
+
     # Valitse kysymys
     selected_question = st.selectbox("Valitse kysymys", numeric_columns)
+
+    # Ohjeistus kuvaajan tulkintaan
+    st.markdown("""
+    ### 📊 Yksikkövertailu
+    Alla oleva kuvaaja näyttää:
+    - Yksiköiden keskiarvot kvartaaleittain palkkeina
+    - Kansallisen keskiarvon mustalla katkoviivalla
+    - Voit tarkastella tarkempia arvoja viemällä hiiren palkkien päälle
+    """)
 
     # Luo kuvaaja
     fig = create_bar_chart(data, numeric_columns, selected_question)
@@ -379,12 +414,46 @@ def main():
         - Keskiarvo lasketaan vain niille kvartaaleille, joissa on dataa vähintään kahdelta yksiköltä
         - Hover-tiedoissa näkyy, kuinka monen yksikön dataan keskiarvo perustuu
     """)
+
+    # Selitys ennusteista ennen niiden näyttämistä
+    st.markdown("""
+    ### 🔮 Ennusteet ja trendit
+    Alla näet ennusteet seuraavalle kvartaalille:
+    - **Nykyarvo**: Viimeisimpien kvartaalien (1-3kk) keskiarvo
+    - **Ennuste**: ↑ tarkoittaa nousevaa trendiä, ↓ laskevaa trendiä
+    - **Todennäköisyys ≥4.5**: Todennäköisyys sille, että arvo ylittää 4.5 seuraavassa kvartaalissa
+    
+    ⚠️ **Huomioitavaa**:
+    - Ennusteet perustuvat historialliseen dataan
+    - Luotettava ennuste vaatii riittävästi aiempaa dataa
+    - Trendit ovat suuntaa-antavia
+    """)
     
     # Tee ennusteet
     predictions = predict_next_values(data, numeric_columns, selected_units)
     
     # Näytä ennusteet
     display_predictions(predictions, data)
+
+    # Metodologian selitys
+    st.markdown("""
+    ---
+    ### 📝 Tietoa analyysimenetelmästä
+    
+    Tämä sovellus käyttää logistista regressiota ennusteiden tekemiseen:
+    
+    1. **Datan käsittely**:
+       - Historiadatasta luodaan aikasarjaominaisuuksia
+       - Puuttuvat arvot käsitellään asianmukaisesti
+    
+    2. **Ennustemalli**:
+       - Käytetään logistista regressiota kynnysarvon (4.5) ylittämisen ennustamiseen
+       - Malli huomioi aiemmat arvot ja trendit
+    
+    3. **Tulosten tulkinta**:
+       - Todennäköisyydet ovat suuntaa-antavia
+       - Korkeampi todennäköisyys tarkoittaa suurempaa mahdollisuutta hyvään arvioon
+    """)
 
 if __name__ == "__main__":
     main()
