@@ -10,6 +10,8 @@ st.set_page_config(
     layout= "wide"
 )
 
+st.logo("https://kamk.fi/wp-content/uploads/2024/05/K-logo_rgb_150dpi10686.png", size="large")
+
 st.title("⚙️ Datatyökalut")
 st.markdown("""
             Tältä sivulta löytyy erilaisia datatyökaluja, joiden avulla voidaan ingestoida ja tarkastella dataa.
@@ -126,7 +128,8 @@ def fetch_data_for_sql(endpoint, dataset_name):
 # Jos HOPP niin näkyy vain HOPP datasetin sarakkeet yms.
 if dataset_option == "💊 HOPP":
     st.header(f"{dataset_option} Data")
-    st.write("Tämä kysely suoritetaan vain HOPP datalle")
+    st.write("Tämä kysely suoritetaan vain HOPP datalle.")
+    st.write("Valitse vielä alta taso, jolle kysely suoritetaan.")
     tier = st.radio("Valitse taso:", ["🥉 Bronze", "🥈 Silver", "🥇 Gold"])
     if tier == "🥉 Bronze":
         df = fetch_data_for_sql(endpoint_bronze_hopp, "HOPP")
@@ -137,7 +140,8 @@ if dataset_option == "💊 HOPP":
 # Jos NES niin näkyy vain NES datasetin sarakkeet yms.
 elif dataset_option == "🩺 NES":
     st.header(f"{dataset_option} Data")
-    st.write("Tämä kysely suoritetaan vain NES datalle")
+    st.write("Tämä kysely suoritetaan vain NES datalle.")
+    st.write("Valitse vielä alta taso, jolle kysely suoritetaan.")
     tier = st.radio("Valitse taso:", ["🥉 Bronze", "🥈 Silver", "🥇 Gold"])
     if tier == "🥉 Bronze":
         df = fetch_data_for_sql(endpoint_bronze_nes, "NES")
@@ -169,6 +173,7 @@ with st.container():
     col1, col2 = st.columns(2)
 
     with col1:
+        st.info("HUOM! Vain SELECT-kyselyt ovat mahdollisia!")
         # Kyselyn tekstikenttä ja suoritus nappi
         with st.form(key='query_form'):
             raw_code = st.text_area("Kirjoita SQL Tähän")
