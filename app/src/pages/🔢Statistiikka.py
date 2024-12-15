@@ -4,6 +4,7 @@ import pandas as pd
 from scipy import stats
 import numpy as np
 import plotly.graph_objects as go
+import re 
 
 st.set_page_config(
     page_title= "Tilastoja",
@@ -56,8 +57,6 @@ if df is not None:
     muu_suomi = df[df['datajoukko'] == 'kooste']
     # Varmitstetaan että kvarttaalit ovat uniikkeja (Vaikka ne on jo)
     kvarttaalit = df['quarter'].unique()
-    # Voidaan valita kysymys
-
     # Kainuun ja Muun Suomen tietojen erottaminen kvartaalikohtaisesti
     combined_data_kainuu = kainuu[['quarter', 'datajoukko'] + kysymykset]
     combined_data_muu_suomi = muu_suomi[['quarter', 'datajoukko'] + kysymykset]
@@ -66,7 +65,7 @@ if df is not None:
     st.header("❓ Kainuun ja Kansallisten kysymysten keskiarvot kvartaaleittain")
 
     st.markdown("""
-    Tässä analyysissä vertaillaan **Kainuun** ja **Kansallisten** kysymysten keskiarvoja kvartaaleittain. 
+    Tässä analyysissä vertaillaan **Kainuun** ja **muun Suomen** kysymysten keskiarvoja kvartaaleittain. 
     
     Keskiarvot on laskettu kyselyn tuloksista ja ne kuvaavat **Kainuun** ja **muun Suomen** asiakastyytyväisyyttä.
 
@@ -164,7 +163,7 @@ if df is not None:
     st.header("📅 Kainuun ja Kansallisten kyselyiden kvartaali-keskiarvot")
     
     st.markdown("""
-    Tässä analyysissä tarkastellaan **Kainuun** ja **Kansallisten** kvarttaaleittaisia keskiarvoja.
+    Tässä analyysissä tarkastellaan **Kainuun** ja **muun Suomen** kvarttaaleittaisia keskiarvoja.
 
     Kvartaalikohtaiset keskiarvot yhdistää kaikkien kysymysten keskiarvot.
 
@@ -208,11 +207,13 @@ if df is not None:
 
     with col7:
         # Esitetään kainuun kvartaali taulukko
-        st.bar_chart(kainuu_grouped, x='quarter', y='Keskiarvo', color="#ffa3eb", use_container_width=True)
+        st.subheader("🌲 Kainuun kvartaali keskiarvot")
+        st.bar_chart(kainuu_grouped, x='quarter', y='Keskiarvo', color="#d280ff", use_container_width=True)
 
     with col8:
         # Esitetään kansallinen kvartaali taulukko
-        st.bar_chart(muu_suomi_grouped, x="quarter", y="Keskiarvo", color="#35daff", use_container_width=True)
+        st.subheader("🇫🇮 Kansalliset kvartaali keskiarvot")
+        st.bar_chart(muu_suomi_grouped, x="quarter", y="Keskiarvo", color="#4ebcff", use_container_width=True)
 
     col9, col10, col11, col12 = st.columns(4)
 
@@ -240,7 +241,7 @@ if df is not None:
         container.metric(label='🪫 Kansallisesti huonoimman kvartaalin keskiarvo', value=grouped_suomi_value_worst)
         container.metric(label='Kvartaali', value=grouped_suomi_quarter_worst)
 
-    st.header("🌲 Kainuu vs Kansallinen 🇫🇮")
+    st.header("🌲 Kainuu vs muu Suomi 🇫🇮")
 
     st.markdown("""
                 Tässä analyysissä vertaillaan **Kainuun** ja **muun Suomen** *HOPP*-datan asiakastyytyväisyyden keskiarvoja, ja käytämme **T-testiä** arvioidaksemme, ovatko erot merkittäviä.
@@ -254,6 +255,7 @@ if df is not None:
                 Valitse alla analysoitava kysymys, jolloin sen kysymyksen tulokset näytetään.
     """)
 
+    # Valitse kysymys
     kysymys = st.selectbox("Valitse kysymys", kysymykset)
     # Käytetään Scipy moduulia laskemaan T-testi
     t_stat, p_value = stats.ttest_ind(kainuu[kysymys], muu_suomi[kysymys])
@@ -305,18 +307,18 @@ t_dist = stats.t.pdf(x, df=len(kainuu) + len(muu_suomi) - 2)  # t-jakauma
 # Plotly-kuvaaja
 fig = go.Figure()
 # T-jakauman käyrä
-fig.add_trace(go.Scatter(x=x, y=t_dist, mode='lines', name="T-jakauma", line=dict(color='#1e36de')))
+fig.add_trace(go.Scatter(x=x, y=t_dist, mode='lines', name="T-jakauma", line=dict(color='#4ebcff')))
 # P-arvon alueen korostus
 fig.add_trace(go.Scatter(
-    x=x[(x >= stats.t.ppf(1 - 0.025, df=len(kainuu) + len(muu_suomi) - 2))],
-    y=t_dist[(x >= stats.t.ppf(1 - 0.025, df=len(kainuu) + len(muu_suomi) - 2))],
-    fill='tozeroy', fillcolor='rgba(255, 0, 0, 0.8)', name="P-arvon alue (0.05 ja alle)"
+    x=x[(x >= stats.t.ppf(1 - 0.03, df=len(kainuu) + len(muu_suomi) - 2))],
+    y=t_dist[(x >= stats.t.ppf(1 - 0.03, df=len(kainuu) + len(muu_suomi) - 2))],
+    fill='tozeroy', fillcolor='#4ebcff', name="P-arvon alue (0.05 ja alle)"
 ))
 # P-arvon alue käänteisesti
 fig.add_trace(go.Scatter(
-    x=x[(x <= stats.t.ppf(0.025, df=len(kainuu) + len(muu_suomi) - 2))],
-    y=t_dist[(x <= stats.t.ppf(0.025, df=len(kainuu) + len(muu_suomi) - 2))],
-    fill='tozeroy', fillcolor='rgba(255, 0, 0, 0.8)'
+    x=x[(x <= stats.t.ppf(0.03, df=len(kainuu) + len(muu_suomi) - 2))],
+    y=t_dist[(x <= stats.t.ppf(0.03, df=len(kainuu) + len(muu_suomi) - 2))],
+    fill='tozeroy', fillcolor='#4ebcff', line=dict(color='#4ebcff'), name='Peilattu p-arvo'
 ))
 # P-arvon **vaakaviiva**
 p_value_position = stats.t.ppf(1 - p_value, df=len(kainuu) + len(muu_suomi) - 2)
@@ -325,12 +327,12 @@ fig.add_trace(go.Scatter(
     y=[stats.t.pdf(p_value_position, df=len(kainuu) + len(muu_suomi) - 2)] * 2,  # P-arvon korkeus t-jakaumassa
     mode='lines',
     name=f'P-arvo: {p_value:.3f}',
-    line=dict(color='#ffc4e6', dash='dot')
+    line=dict(color='#945cb4', dash='dot')
 ))
 # Hypoteesi 0 - pystysuora viiva
-fig.add_trace(go.Scatter(x=[0, 0], y=[0, max(t_dist)], mode='lines', name="Hypoteesi 0", line=dict(color='black')))
+fig.add_trace(go.Scatter(x=[0, 0], y=[0, max(t_dist)], mode='lines', name="Hypoteesi 0", line=dict(color='#000000')))
 # T-arvo - pystysuora viiva
-fig.add_trace(go.Scatter(x=[t_stat, t_stat], y=[0, max(t_dist)], mode='lines', name=f'T-arvo ({t_stat:.3f})', line=dict(color='#fff228', dash='dash')))
+fig.add_trace(go.Scatter(x=[t_stat, t_stat], y=[0, max(t_dist)], mode='lines', name=f'T-arvo ({t_stat:.3f})', line=dict(color='#002790', dash='dash')))
 # Otsikko, akselit ja legenda
 fig.update_layout(
     title=f"T-jakauma ja t-arvo ({kysymys})",
