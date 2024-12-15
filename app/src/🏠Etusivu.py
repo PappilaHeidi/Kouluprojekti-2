@@ -7,6 +7,8 @@ st.set_page_config(
     layout="wide"
 )
 
+st.logo("https://kamk.fi/wp-content/uploads/2024/05/K-logo_rgb_150dpi10686.png", size="large")
+
 # Sivun otsikko ja teksti
 st.title("🚀 Mojovat: Ennusteita datan pohjalta ")
 
@@ -75,4 +77,9 @@ st.header("⏱️ Clockify")
 st.markdown("Tässä Mojovien projektin yhteistunnit")
 st.markdown('<iframe src="https://app.clockify.me/shared/673c996fa5b53c67d258d043" width="1000" height="600"></iframe>', unsafe_allow_html=True)
 
-# Tänne GitLab Stats
+# GitLab stats
+
+st.header("🗂️ GitLab Stats")
+
+st.markdown("TODO")
+
