@@ -14,9 +14,6 @@ st.set_page_config(
     layout= "wide"
 )
 
-
-st.set_page_config(layout="wide", page_title="HOPP Analytics")
-
 st.title("🏥 HOPP Asiakaspalaute dashboard")
 
 st.markdown("""
@@ -62,10 +59,16 @@ def load_data():
     
     df = pd.DataFrame(data)
     
+    questions_to_remove = [
+        '6_hoitajat_kertoivat_mie_uuden_laakkeen_antamisen_yhteydessa_miksi_laaketta_annetaan',
+        '7_hoitajat_kertoivat_mie_saamieni_laakkeiden_mahdollisista_sivuvaikutuksista',
+        '11_hoitajat_huolehtivat_etteivat_hoito_ja_tai_tutkimukset_aiheuttaneet_mie_noloja_tai_kiusallisia_tilanteita'
+    ]
     
 
     # Datan siistiminen
     numeric_columns = [col for col in df.columns if col.split('_')[0].isdigit()]
+    numeric_columns = [col for col in numeric_columns if col not in questions_to_remove]
     df[numeric_columns] = df[numeric_columns].replace('E', np.nan)
     df[numeric_columns] = df[numeric_columns].apply(pd.to_numeric, errors='coerce')
     
@@ -143,9 +146,15 @@ with tab1:
             )
         )
         
+        # Uusi väripaletti
+        colors = {
+            'AIKTEHOHO': '#1f77b4',    # Sininen
+            'EALAPSAIK': '#17a2b8',    # Turkoosi
+            'ENSIHOITO': '#4B0082'     # Indigo
+        }
+        
         # Yksikkökohtaiset viivat
-        colors = ['#1f77b4', '#2ca02c', '#d62728']  
-        for i, unit in enumerate(selected_units):
+        for unit in selected_units:
             unit_data = unit_avg[unit_avg['unit_code'] == unit]
             traces.append(
                 go.Scatter(
@@ -153,7 +162,7 @@ with tab1:
                     y=unit_data[selected_question], 
                     mode='lines+markers',
                     name=unit,
-                    line=dict(color=colors[i % len(colors)]),
+                    line=dict(color=colors[unit]),
                     hovertemplate=f'{unit}: %{{y:.2f}}<extra></extra>'
                 )
             )
@@ -360,7 +369,3 @@ st.markdown("""
 
 *Tarvitsetko apua työkalun käytössä? Ota yhteyttä [tukeen](mailto:support@example.com)*
 """)
-
-st.write("### Kaikki kysymykset:")
-for col in numeric_columns:
-    st.write(f"Kysymys {col.split('_')[0]}: {question_descriptions[col]}")

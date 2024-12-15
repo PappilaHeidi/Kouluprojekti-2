@@ -13,19 +13,27 @@ st.set_page_config(
     layout= "wide"
 )
 
-# Lisätään sovelluksen kuvaus ja käyttöohjeet
+# Sovelluksen kuvaus ja käyttöohjeet
 st.markdown("""
 # 📊 HOPP Lineaarinen Regressioanalyysi
 
 Tämä sovellus analysoi asiakaspalautedataa ja ennustaa tulevia trendejä lineaarisen regression avulla.
+""")
 
+col1, col2 = st.columns(2)
+
+with col1:
+   st.markdown("""        
 ## 📝 Käyttöohjeet:
 1. Valitse ensin haluamasi kysymys pudotusvalikosta
 2. Valitse tarkasteltava yksikkö
 3. Sovellus näyttää:
    - Historiallisen datan sinisellä viivalla
    - Ennusteen seuraavalle 5 kvartaalille punaisella katkoviivalla
+    """)
 
+with col2:
+   st.markdown("""
 ## ℹ️ Tietoa analyysistä:
 - Ennuste perustuu lineaariseen regressioon
 - Analyysi huomioi vain täydelliset vastaukset (ei puuttuvia arvoja)
@@ -94,7 +102,7 @@ def calculate_averages(data, numeric_columns):
 data, numeric_columns, selected_units = fetch_data()
 unit_avg, national_avg = calculate_averages(data, numeric_columns)
 
-# Lisätään ohjeistus kysymyksen valintaan
+# Ohjeistus kysymyksen valintaan
 st.markdown("""
 ### 🔍 Kysymyksen valinta
 Valitse alla olevasta valikosta kysymys, jonka trendiä haluat analysoida:
@@ -103,7 +111,7 @@ Valitse alla olevasta valikosta kysymys, jonka trendiä haluat analysoida:
 # Valitse kysymys
 selected_question = st.selectbox("Valitse kysymys", numeric_columns)
 
-# Lisätään ohjeistus yksikön valintaan
+# Ohjeistus yksikön valintaan
 st.markdown("""
 ### 🏥 Yksikön valinta
 Valitse yksikkö, jonka dataa haluat tarkastella:
@@ -166,7 +174,7 @@ def create_plotly_chart(data, selected_unit, selected_question):
 # Näytä lineaarisen regression visualisointi
 selected_unit = st.selectbox("Valitse yksikkö", selected_units)
 
-# Lisätään selite graafille
+# Selite graafille
 st.markdown("""
 ### 📈 Trendianalyysi
 Alla näet valitun yksikön historiallisen datan ja ennusteen:
@@ -180,7 +188,7 @@ if chart is not None:
 else:
     st.warning(f"Ei riittävästi dataa ennustamiseen kysymykselle {selected_question} yksikölle {selected_unit}.")
 
-# Lisätään huomautus datan tulkinnasta
+# Huomautus datan tulkinnasta
 st.markdown("""
 ---
 ### ⚠️ Huomioitavaa

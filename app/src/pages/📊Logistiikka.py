@@ -19,19 +19,27 @@ st.markdown("""
 # 📊 HOPP Logistinen Regressioanalyysi
 
 Tämä sovellus analysoi asiakaspalautedataa käyttäen logistista regressiota ja visualisoi tulokset interaktiivisesti.
+            """) 
 
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown("""
 ## 🎯 Analyysin tavoitteet
 - Vertailla yksiköiden suoriutumista eri kysymyksissä
 - Ennustaa todennäköisyyksiä korkeille arvioille (≥4.5)
 - Tunnistaa kehitystrendejä yksiköittäin
-
+""")
+    
+with col2:
+   st.markdown("""
 ## 📈 Visualisoinnin selite
 - Palkit näyttävät yksiköiden keskiarvot kvartaaleittain
 - Musta katkoviiva osoittaa kansallisen keskiarvon
 - Värikoodaus:
   - 🔵 AIKTEHOHO
-  - 🟢 EALAPSAIK
-  - 🔴 ENSIHOITO
+  - 💠 EALAPSAIK
+  - 🔹 ENSIHOITO
 """)
 
 # Asetetaan API-osoite
@@ -57,9 +65,6 @@ def fetch_data():
         # Korvaa 'E' arvot NaN:lla ja muunna numerot
         data[numeric_columns] = data[numeric_columns].replace('E', pd.NA)
         data[numeric_columns] = data[numeric_columns].apply(pd.to_numeric, errors='coerce')
-        
-        # Näytä quarter-sarakkeen sisältö debuggausta varten
-        st.write("Unique quarters:", data['quarter'].unique())
         
         # Muunna quarter aikasarjamuotoon turvallisemmin
         def quarter_to_date(q):
@@ -155,9 +160,9 @@ def create_bar_chart(data, numeric_columns, selected_question):
     
     traces = []
     colors = {
-        "AIKTEHOHO": "blue",
-        "EALAPSAIK": "green", 
-        "ENSIHOITO": "red"
+        "AIKTEHOHO": "#1f77b4",    
+        "EALAPSAIK": "#17a2b8",    
+        "ENSIHOITO": "#4B0082"     
     }
     
     # Laske kansallinen keskiarvo vain jos on vähintään 2 yksikköä dataa
@@ -173,17 +178,22 @@ def create_bar_chart(data, numeric_columns, selected_question):
     for unit in ["AIKTEHOHO", "EALAPSAIK", "ENSIHOITO"]:
         unit_data = data[data['unit_code'] == unit]
         
+        # Laske keskiarvot kvartaaleittain
+        unit_averages = unit_data.groupby('quarter')[selected_question].agg(['mean', 'count']).reset_index()
+        
         traces.append(
             plt.Bar(
                 name=unit,
-                x=unit_data['quarter'],
-                y=unit_data[selected_question],
+                x=unit_averages['quarter'],
+                y=unit_averages['mean'],  # Käytetään keskiarvoja
                 marker_color=colors[unit],
                 hovertemplate=(
                     f'{unit}<br>'
-                    f'Arvo: %{{y:.2f}}<br>'
+                    f'Keskiarvo: %{{y:.2f}}<br>'
+                    f'Vastauksia: %{{text}}<br>'
                     f'Kvartaali: %{{x}}<extra></extra>'
-                )
+                ),
+                text=unit_averages['count']  # Näytetään vastausten määrä
             )
         )
     
