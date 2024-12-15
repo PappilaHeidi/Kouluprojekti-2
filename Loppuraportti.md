@@ -23,23 +23,21 @@ Projektin roolit ja esimerkkivastuut on jaettu seuraavasti:
 
 | Nimi     | Rooli           | Kommentit                        |
 | -------- | ------------    |------------------------------    |
-| Andreas  | Product Owner   | Vastuu loppuraportista           |
+| Andreas  | Product Owner   | Vastuu kehitysjonosta            |
 | Joni     | Developer       | Data analyysit ja kuvaajat       |
 | Heidi    | Developer       | Tietokannan ylläpito             |
 | Linnea   | Scrum Master    | Vastuu projektisuunnitelusta     |
 | Ville    | Developer       | Datankäsittely                   |
 
-Projektia on tehty kahdeksan viikon sykleissä, eli viikon mittaisissa sprinteissä. Jokainen sprintti on todettu onnistuneeksi, projektin ajalta ei jäänyt keskeneräisiä sprinttejä. Projektista on myös suhteellisen kattavat Gitlab Issuet, sekä niitä on pyritty noudattamaan koko projektin ajan.
+Projektia on tehty kahdeksan viikon ajan ja kahden viikon mittaisissa sprinteissä. Jokainen sprintti on todettu onnistuneeksi, projektin ajalta ei jäänyt keskeneräisiä sprinttejä. Projektista on myös suhteellisen kattavat Gitlab Issuet, sekä niitä on pyritty noudattamaan koko projektin ajan.
 
 Jokaisessa sprintissä on pidetty vähintään 2x tiimipalaveria,kestoltaan noin 1h-3h, sekä satunnaisesti mutta usein päivittäin yhteyttä on pidetty myös viestein. 
 
 Projektista on kirjtattu myös projektin/tiimin yhteistä päiväkirjaa, sekä sen lisäksi jokainen tiimin jäsen on kirjannut omaan päiväkirjaan dokumentaatiota osilta, joihin he erityisesti ovat projektissa keskittyneet. 
 
-
 ## 2. Vaatimukset
 Esitelkää projektin vaatimukset
 Voitte viitata myös tekemäänne vaatimusmäärittelyyn.
-
 Projektin vaatimuksiksi asetettiin...
 
 ## 3. Data-aineisto
@@ -59,13 +57,60 @@ Bronze data kuvastaa projektissa esikäsittelemätöntä, raakadataa. Silver kuv
 
 ## 4. Arkkitehtuuri
 
-![Kuvaus](kaavio.png)
+![alt text](./images/image2.png)
 
-## 5. Testatut koneoppimismenetelmät
+* Käyttäjän data syötetään Web-alustalta (ingest).
+* Data tallennetaan JSON-objektina paikalliseen tiedostojärjestelmään (lake).
+* Dataputki eri medallion-tasoille käynnistetään HTTP-kutsulla tietokanta-konttiin.
+* Tietokantaan ei tehdä suoria kyselyjä (pois lukien kehitystyö).
+* Käyttäjille ja kehittäjille on tarkoituksen mukainen rajapinta tietokantaan.
+* Käyttäjille suunnattu analytiikka ja ennustus rakennettu Streamlitillä.
+* Modulaarisuus edellä: "Write programs to work together" – yksi Unixin filosofian periaatteista.
+
+## 5. Datajoukko
+
+* Kolme kvartaalia puuttui Kainuun HOPP-kyselyistä:
+    * Kyseiset jaksot imputoitiin käyttäen kooste-datajoukon kvartaalin keskiarvoja, joihin tehtiin korjaus kunkin kainuun ja koosteen kvartaalin erolla. Tämä osoittautui noudattavan hyvin olemassa olevaa kyselytulosten eroa, jota tarkasteltiin visuaalisesti.
+
+* HOPP-datajoukon kyselyiden nimeämiskäytäntöjen epäjohdonmukaisuudet korjattiin. Kyseljyt yhdisteltiin niiden yhtäläisyyksien perusteella.
+
+* Analytiikassa käytettiin kulta-tasoa, jossa on yhdistettynä paikallinen ja kansallinen data yhdeksi tauluksi.
+
+
+## 5. Koneoppimismenetelmät
+
+Koneoppimismalleissa käytettiin klassisia algoritmeja ja syväoppimista:
+* CNN
+* RNN
+* Random Forest
+* Decision Tree
+
 Esitelkää testaamanne koneoppimismenetelmät, esim. käytetyt neuroverkot ja niiden hyperparametrit.
 Miksi valitsitte juuri nämä?
 
+### Convolutional Neural Network (CNN)
+
+Yksidimensionaalinen konvoluutioverkko käsittelee vektorijonoa esim. sanoja tai lukuja, ikään kuin se olisi kuva. Konvoluutiosuodin liikkuu jonoa pitkin yhden ulottuvuuden mukaisesti, ja se oppii kaavoja tai lyhyitä alijaksoja. Mallia käytettiin projektissa annettuun aikajaksotettuun kyselydataan ja seuraavien jaksojen ennustamiseen.
+
+CNN-mallilla saavutettiin paremmat tulokset klassiseen päätöspuu-algoritmiin verrattuna. Mallit testattiin takaisintestausmenetelmällä (Backtesting), jossa RMSE-arvo otettiin jokaisen laajenevan ikkunoinnin (expanding window) iteroinnilla. 
+
+Testi- ja ennustusarvojen konvergoitumista oli havaittavissa, vaikka aikajaksotettu datajoukko oli vain yhdeksän havaintoa (observation) pitkä, josta vähennettin vielä yksi rivi lag-arvoa varten.
+
+### Random Forest
+Random Forest mallia käytettiin muuttujien ennustuksissa ja muiden mallien vertailuissa. Random Forestilla oli haasteita tunnistaa kaavoja, datajoukon laadusta johtuen. Testauksen laajuus jäi suppeaksi havaintojen vähäisyyden takia.
+ 
 ## 6. Tulokset
+
+### Mallit
+
+**RMSE keskiarvot:**
+* Kysymys 2 (Hoitajat ja lääkärit toimivat hyvin yhdessä ...)
+    * Decision Tree: 0.29
+    * CNN: 0.28
+* Monimuuttuja
+    * Decision Tree: ei testattu
+    * CNN: 0.44 (huonompi arvo alkusatunnaisuuksien takia)
+
 Esitelkää saamanne tulokset.
 
 ## 7. Tulosten pohdinta
@@ -73,6 +118,9 @@ Pohtikaa saavuttamienne tulosten luotettavuutta, toistettavuutta ja yleistettäv
 Pohtikaa saavuttamianne tuloksia projektin tavoitteisiin nähden. Saavutitteko tavoitteet?
 
 ## 8. Mahdolliset jatkokehityskohteet
+
+* Validointikerroksen lisäys tietokannan rajapinnan kutsuissa, esim. Pydantic tai oma mukautettu validointimoduuli.
+* CI/CD testit
 
 Projektin jatkokehityskohteina voisi olla esimerkiksi vielä pidemmälle kehitettyä koneoppimismallin käyttöä, testaaminen suuremmalla datamäärällä, sekä erilaiset laajemmat analyysit. 
 
