@@ -20,14 +20,15 @@ PROJECT_SIGMA/
 │
 ├── app/                           # Container 3: Streamlit app
 │   ├── .streamlit/
-│   │   └── config.toml
+│   │   └── config.toml            # For streamlit configuration
 │   ├── src/                       # Source code for Streamlit
 │   │   ├── images/
 │   │   │   └── .webp              # Main page image
 │   │   ├── pages/
-│   │   │   ├── HOPP_LR.py         # Contains Linear Regression analysis for HOPP data
-│   │   │   ├── HOPPlop.py         # Contains interactive visualisation for HOPP data
-│   │   │   ├── 📊Stats.py         # Contains basic statics for HOPP and NES data
+│   │   │   ├── 🏥HOPP Analyysi    # Contains Logistic Regression analysis for HOPP data
+│   │   │   ├── 📉Lineaarisuus     # Contains Linear Regression analysis for HOPP data
+│   │   │   ├── 📊Logistiikka.py   # Contains interactive visualisation for HOPP data
+│   │   │   ├── 🔢Statistiikka.py  # Contains basic statics for Gold based HOPP data
 │   │   │   └── 🔍Data.py          # Contains 3 different tools for data
 │   │   ├── 🏠Etusivu.py           # Streamlit main page
 │   │   └── utils.py               # Utility functions for streamlit
