@@ -13,45 +13,101 @@
 Tässä projektissa pyritään tarjoamaan Kainuun Hyvinvointialueelle data-analyysipalveluja, jotka tukevat päätöksentekoa ja parantavat palveluiden laatua. Analyysit keskittyvät erityisesti henkilöstön työtyytyväisyyteen (NES) ja asiakastyytyväisyyteen (HOPP), keskittyen tärkeimpiin osa-alueisiin, kuten johtamiseen, sitoutuneisuuteen ja asiakaspalvelun laatuun. Tavoitteena on tuottaa hyödyllistä tietoa, joka auttaa Kainuun Hyvinvointialuetta parantamaan toimintansa tehokkuutta, kehittämään henkilöstön hyvinvointia ja asiakastyytyväisyyttä sekä optimoimaan resurssien käyttöä alueen sosiaali- ja terveyspalveluissa sekä pelastustoimessa. Data-analyysit tarjoavat selkeitä ja käytännöllisiä näkökulmia, jotka tukevat strategisten päätösten tekemistä ja palveluiden kehittämistä Kainuun alueella.
 
 # Projektin rakenne
+**Sisältää projekti kansion rakenteen**
+
 ```
 PROJECT_SIGMA/
 │
-├── docker-compose.yml             # Compose file to manage containers and networking
+├── app/                           # Container 3: Streamlit app
+│   ├── .streamlit/
+│   │   └── config.toml
+│   ├── src/                       # Source code for Streamlit
+│   │   ├── images/
+│   │   │   └── .webp              # Main page image
+│   │   ├── pages/
+│   │   │   ├── HOPP_LR.py         # Contains Linear Regression analysis for HOPP data
+│   │   │   ├── HOPPlop.py         # Contains interactive visualisation for HOPP data
+│   │   │   ├── 📊Stats.py         # Contains basic statics for HOPP and NES data
+│   │   │   └── 🔍Data.py          # Contains 3 different tools for data
+│   │   ├── 🏠Etusivu.py           # Streamlit main page
+│   │   └── utils.py               # Utility functions for streamlit
+│   ├── Dockerfile                 # Dockerfile for Streamlit container
+│   └── README.md                  # Instructions for Streamlit
 │
-├── ingestion/                     # Container 1: Data ingestion
-│   ├── Dockerfile                 # Dockerfile for ingestion container
-|   ├──README.md
-│   ├── src/                       # Source code for ingestion
-│       ├── __init__.py
-│       ├── ingestion_api.py       # FastAPI ingestion  
-│       └── utils.py               # Utility functions for Ingestion tool
+├── data/
+│   ├── HOPP/                      # HOPP Excel data
+│   ├── ingestion/                 # Contains ingested data
+│   │   └── .gitkeep               # Saves files 
+│   ├── NES/                       # NES Excel data
+│   └── .gitkeep                   # Saves files 
 │
 ├── database/                      # Container 2: CosmosDB Query service
 │   ├── Dockerfile                 # Dockerfile for database container
-|   ├── README.md
-|   ├── db_templates/              # SQL templates used for querying
-|   |   ├── bronze.sql             # Bronze template
+│   ├── README.md
+│   ├── db_templates/              # SQL templates used for querying
+│   |   └── bronze.sql             # Bronze template
 │   ├── src/                       # Source code for database query service
 │   │   ├── __init__.py
 │   │   ├── connection_tool.py     # Connection module to database
 │   │   ├── database_api.py        # Fast API for query service
 │   │   └── utils.py               # Utility functions for database api
+│ 
+├── diary/                         # Mkdocs folder
+│   ├── docs/                       
+│   │   ├── docs/       
+│   │   │   ├── images/            # Folder contains all images used in Mkdocs
+│   │   │   │   └── .png
+│   │   │   ├── weeks/             # Folder contains all the Sprint files
+│   │   │   │   └── sprints        
+│   │   │   ├── .pages             # Required for pages
+│   │   │   ├── index.md           # First page
+│   │   │   └── loppuraportti.md   # Final report / Last page
+│   │   └── mkdocs.yml
+│   ├── docker-compose-yml         # Mkdocs container
+│   ├── docs.Dockerfile            # Mkdocs dockerfile
+│   └── HOW-TO-DOCS.md             # Markdown file for Mkdocs instructions
 │
-├── app/                           # Container 3: Streamlit app
-│   ├── Dockerfile                 # Dockerfile for Streamlit container
-|   ├── README.md
-│   ├── src/                       # Source code for Streamlit
+├── ingestion/                     # Container 1: Data ingestion
+│   ├── src/                       # Source code for ingestion
 │   │   ├── __init__.py
-│   │   ├── streamlit_app.py       # Entrypoint for Streamlit (UI and API calls)
-│   │   └── utils.py               # Utility functions for streamlit
+│   │   ├── ingestion_api.py       # FastAPI ingestion  
+│   │   └── utils.py               # Utility functions for Ingestion tool
+│   ├── Dockerfile                 # Dockerfile for ingestion container
+│   └── README.md                  # Readme file for data ingestion
 │
-└── shared/                        # Shared resources and configurations
-    ├── requirements/              # Requirements files for each container
-    │   ├── ingestion.txt
-    │   ├── database.txt
-    │   |── app.txt
-    │   └── local.txt
-    └── .env                       # Environment variables
+├── notebooks/
+│   ├── .gitkeep                   # Saves files
+│   ├── db_connect.ipynb           # Database connection locally notebook
+│   ├── first_db_connection.ipynb  # Create new container to database
+│   ├── gold_EDA_pg.ipynb          # Gold table
+│   ├── hopp_example.csv           # HOPP data example file
+│   ├── HOPP_HOPP.ipynb            # HOPP data analysis notebook
+│   ├── lisää_käppyrää.ipynb       # HOPP data predictions notebook
+│   ├── nes_example.csv            # NES data example file
+│   ├── NES_NES.ipynb              # NES data analysis notebook
+│   ├── SatunnainenMettä.ipynb     # HOPP data with Random Forest model
+│   └── silver_HOPPLOPP.ipynb      # Silver table API
+│
+├── public/
+│   └── index.html                 # To deploy documentation pages
+│
+├── shared/                        # Shared resources and configurations
+│   ├── requirements/              # Requirements files for each container
+│   │   ├── ingestion.txt
+│   │   ├── database.txt
+│   │   |── app.txt
+│   │   └── local.txt
+│   ├── requirements.txt           # Requirements
+│   └── .env                       # Environment variables
+│
+├── .gitignore                     # Git ignore
+│
+├── .gitlab-ci.yml                 # GitLab pipeline
+│
+├── docker-compose.yml             # Compose file to manage containers and networking
+│
+└── README.md                      # Project basics and instructions
+
 ```
 
 # Sovelluksen työkalut

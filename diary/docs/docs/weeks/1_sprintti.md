@@ -55,7 +55,7 @@ Tiimi aloitti projektin ensimmäisen sprintin keskittymällä datan käsittelyn 
 ![INGESTION](../images/ingestointi.png)
 **Kuva 3:** Kuvassa näkyy ingestointi prosessi, jossa raakadataa siirretään tietokantaan (CosmosDB).
 
-![SPRINTTI1](../images/sprintti1.png)
+![SPRINTTI 1](../images/sprintti1.png)
 **Kuva 4:** Kuvassa näkyvät GitLabin Burndown- ja Burnup-kaaviot, jotka sisältävät sprintin aikana luodut issuet.
 
 ## **Seuraavaksi**
