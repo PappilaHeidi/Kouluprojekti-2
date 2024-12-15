@@ -7,6 +7,14 @@ from azure.cosmos import CosmosClient
 import os
 from dotenv import load_dotenv
 
+
+st.set_page_config(
+    page_title= "Käppyrää",
+    page_icon= "🏥",
+    layout= "wide"
+)
+
+
 st.set_page_config(layout="wide", page_title="HOPP Analytics")
 
 st.title("🏥 HOPP Asiakaspalaute dashboard")
