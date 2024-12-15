@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ./app/src /app/src
 COPY ./data/ /app/data/
 COPY ./notebooks/playground /app/notebooks/playground
+COPY ./.streamlit/config.toml /root/.streamlit/config.toml
 
 # Set the PYTHONPATH to make `src` available for imports
 ENV PYTHONPATH=/app/src

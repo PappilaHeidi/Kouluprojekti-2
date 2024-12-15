@@ -6,6 +6,40 @@ from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
+
+st.set_page_config(
+    page_title= "Lineaarisuus",
+    page_icon= "📉",
+    layout= "wide"
+)
+
+# Sovelluksen kuvaus ja käyttöohjeet
+st.markdown("""
+# 📊 HOPP Lineaarinen Regressioanalyysi
+
+Tämä sovellus analysoi asiakaspalautedataa ja ennustaa tulevia trendejä lineaarisen regression avulla.
+""")
+
+col1, col2 = st.columns(2)
+
+with col1:
+   st.markdown("""        
+## 📝 Käyttöohjeet:
+1. Valitse ensin haluamasi kysymys pudotusvalikosta
+2. Valitse tarkasteltava yksikkö
+3. Sovellus näyttää:
+   - Historiallisen datan sinisellä viivalla
+   - Ennusteen seuraavalle 5 kvartaalille punaisella katkoviivalla
+    """)
+
+with col2:
+   st.markdown("""
+## ℹ️ Tietoa analyysistä:
+- Ennuste perustuu lineaariseen regressioon
+- Analyysi huomioi vain täydelliset vastaukset (ei puuttuvia arvoja)
+- Graafissa X-akseli näyttää vuosineljännekset ja Y-akseli keskiarvot
+""")
+
 # Asetetaan API-osoite
 api_url = "http://database:8081/get/silver/hopp"
 
@@ -31,16 +65,15 @@ def fetch_data():
         return data, numeric_columns, selected_units
     else:
         st.error(f"Virhe haettaessa dataa: {response.status_code}")
-        #response.raise_for_status()
 
 def sort_quarters(df):
     """Järjestää vuosineljännekset oikeaan järjestykseen."""
     def quarter_to_float(q):
         quarter, year = q.split('_')
-        return int(year) + (int(quarter) - 1) / 4  # Kvartaali float-muotoon (esim. 1_2022 -> 2022.0)
+        return int(year) + (int(quarter) - 1) / 4
 
     df['quarter_float'] = df['quarter'].apply(quarter_to_float)
-    df = df.sort_values(by='quarter_float').drop(columns='quarter_float')  # Poistetaan apusarake
+    df = df.sort_values(by='quarter_float').drop(columns='quarter_float')
     return df
 
 def generate_future_quarters(last_quarter, num_future):
@@ -49,7 +82,7 @@ def generate_future_quarters(last_quarter, num_future):
     future_quarters = []
     for _ in range(num_future):
         quarter += 1
-        if quarter > 4:  # Siirrytään seuraavaan vuoteen
+        if quarter > 4:
             quarter = 1
             year += 1
         future_quarters.append(f"{quarter}_{year}")
@@ -65,51 +98,49 @@ def calculate_averages(data, numeric_columns):
     
     return unit_avg, national_avg
 
-# Streamlit-sovelluksen UI
-st.title("HOPPlop Linear Regression Analyysi")
-
 # Hakee ja käsittelee datan
 data, numeric_columns, selected_units = fetch_data()
 unit_avg, national_avg = calculate_averages(data, numeric_columns)
 
+# Ohjeistus kysymyksen valintaan
+st.markdown("""
+### 🔍 Kysymyksen valinta
+Valitse alla olevasta valikosta kysymys, jonka trendiä haluat analysoida:
+""")
+
 # Valitse kysymys
 selected_question = st.selectbox("Valitse kysymys", numeric_columns)
+
+# Ohjeistus yksikön valintaan
+st.markdown("""
+### 🏥 Yksikön valinta
+Valitse yksikkö, jonka dataa haluat tarkastella:
+""")
 
 # Luo lineaarisen regression visualisointi
 def create_plotly_chart(data, selected_unit, selected_question):
     """Visualisoi historialliset tiedot ja ennusteet Plotlyn avulla."""
     unit_data = data[data["unit_code"] == selected_unit]
     
-    # Ryhmittele keskiarvot kvartaaleittain
     avg_data = unit_data.groupby("quarter")[selected_question].mean().reset_index()
-    avg_data = sort_quarters(avg_data)  # Järjestetään kvartaaleittain
+    avg_data = sort_quarters(avg_data)
 
-    # Poista rivit, joissa on NaN-arvoja
     avg_data = avg_data.dropna(subset=[selected_question])
 
-    # Tarkista, että datassa on riittävästi pisteitä
     if avg_data.shape[0] > 1:
-        # Muodosta X ja y
         X = np.arange(avg_data.shape[0]).reshape(-1, 1)
         y = avg_data[selected_question]
-        st.dataframe(X)
-        st.dataframe(y)
-        # Lineaarinen regressiomalli
+        
         model = LinearRegression()
         model.fit(X, y)
 
-        # Ennusta seuraavat 5 kvartaalia
         last_quarter = avg_data['quarter'].iloc[-1]
         future_quarters = generate_future_quarters(last_quarter, 5)
         future_X = np.arange(len(X), len(X) + len(future_quarters)).reshape(-1, 1)
-        st.write(future_quarters)
-        st.write(future_X)
         predictions = model.predict(future_X)
 
-        # Luo Plotly-kaavio
         fig = go.Figure()
 
-        # Lisää historiallinen data
         fig.add_trace(go.Scatter(
             x=avg_data['quarter'],
             y=y,
@@ -119,7 +150,6 @@ def create_plotly_chart(data, selected_unit, selected_question):
             marker=dict(size=8)
         ))
 
-        # Lisää ennusteet
         fig.add_trace(go.Scatter(
             x=future_quarters,
             y=predictions,
@@ -129,7 +159,6 @@ def create_plotly_chart(data, selected_unit, selected_question):
             marker=dict(size=8, symbol='x')
         ))
 
-        # Kaavion asetukset
         fig.update_layout(
             title=f"{selected_unit} - {selected_question} - Asiakaspalautteen keskiarvot",
             xaxis=dict(title="Kvartaali (vuosi)", tickangle=-45),
@@ -140,13 +169,30 @@ def create_plotly_chart(data, selected_unit, selected_question):
 
         return fig
     else:
-        print(f"Ei riittävästi dataa ennustamiseen kysymykselle {selected_question} yksikölle {selected_unit}.")
         return None
 
-# Näytä lineaarisen regression visualisointi Streamlitissä
+# Näytä lineaarisen regression visualisointi
 selected_unit = st.selectbox("Valitse yksikkö", selected_units)
+
+# Selite graafille
+st.markdown("""
+### 📈 Trendianalyysi
+Alla näet valitun yksikön historiallisen datan ja ennusteen:
+- **Sininen viiva**: Toteutunut historiallinen data
+- **Punainen katkoviiva**: Ennuste tuleville kvartaaleille
+""")
+
 chart = create_plotly_chart(data, selected_unit, selected_question)
 if chart is not None:
-    st.plotly_chart(chart)  # Korjattu: Käytetään st.plotly_chart
+    st.plotly_chart(chart)
 else:
     st.warning(f"Ei riittävästi dataa ennustamiseen kysymykselle {selected_question} yksikölle {selected_unit}.")
+
+# Huomautus datan tulkinnasta
+st.markdown("""
+---
+### ⚠️ Huomioitavaa
+- Ennuste on suuntaa-antava ja perustuu historialliseen dataan
+- Ennusteen luotettavuus riippuu historiallisen datan määrästä ja laadusta
+- Puuttuvat arvot on poistettu analyysistä
+""")
