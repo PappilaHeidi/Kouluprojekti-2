@@ -45,6 +45,10 @@ class IngestionTool():
                 return sheet
         return None
     
+    def add_extra_columns(self, year, dataset):
+        self.df['year'] = year
+        self.df['dataset'] = dataset
+
     def json_to_file(self, filename):
         fpath = os.path.join(self.ingestion_path, f"{filename}.json")
         self.df.to_json(fpath, orient='records', indent=4, lines=False)
