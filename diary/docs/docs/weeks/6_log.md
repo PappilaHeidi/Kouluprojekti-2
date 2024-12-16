@@ -66,5 +66,3 @@ Ennusteet esitetään selkeässä taulukkomuodossa, jossa:
 - Todennäköisyys korkealle arviolle (≥4.5) esitetään prosentteina
 
 ![alt text](../images/log2.PNG)
-
-Tämän lähestymistavan ansiosta voimme esittää ennusteemme helposti ymmärrettävässä muodossa, mikä tukee tehokasta päätöksentekoa terveydenhuollon yksiköissä.
