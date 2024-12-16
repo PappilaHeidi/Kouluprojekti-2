@@ -84,6 +84,8 @@ Koneoppimismalleissa käytettiin klassisia algoritmeja ja syväoppimista:
 * RNN
 * Random Forest
 * Decision Tree
+* Linear regression
+* Logistic Regression
 
 Esitelkää testaamanne koneoppimismenetelmät, esim. käytetyt neuroverkot ja niiden hyperparametrit.
 Miksi valitsitte juuri nämä?
@@ -98,7 +100,33 @@ Testi- ja ennustusarvojen konvergoitumista oli havaittavissa, vaikka aikajaksote
 
 ### Random Forest
 Random Forest mallia käytettiin muuttujien ennustuksissa ja muiden mallien vertailuissa. Random Forestilla oli haasteita tunnistaa kaavoja, datajoukon laadusta johtuen. Testauksen laajuus jäi suppeaksi havaintojen vähäisyyden takia.
- 
+
+### Linear ja Logistic Regression
+
+Hopp-datan analysointiin ja ennustamiseen käytettiin kahta regressiomallia: lineaarista regressiota trendien ennustamiseen ja logistista regressiota korkeiden arvosanojen todennäköisyyksien arviointiin.
+
+Lineaarinen regressio valittiin sen selkeyden ja tulkittavuuden vuoksi. Se soveltuu erityisen hyvin aikasarjojen trendien analysointiin ja tulevien arvojen ennustamiseen. Mallissa käytettiin kvartaalien järjestysnumeroita selittävinä muuttujina ja mitattuja keskiarvoja selitettävinä muuttujina.
+
+Logistinen regressiomalli optimoitiin tunnistamaan korkealaatuista palvelua (arvot ≥4.5) seuraavilla hyperparametreilla:
+
+```python
+LogisticRegression(
+    random_state=42,       # Toistettavuuden varmistamiseksi
+    max_iter=5000,         # Konvergenssin varmistamiseksi
+    C=0.8,                 # Regularisaation voimakkuus
+    class_weight='balanced', # Luokkien tasapainotus
+    solver='liblinear',     # Optimoitu pienille dataseteille
+    penalty='l1'           # L1-regularisaatio feature-valintaan
+)
+```
+
+Molemmissa malleissa datan esikäsittely oli kriittistä. Aikasarjaominaisuuksina käytettiin:
+
+- Kolmen kvartaalin liukuvaa keskiarvoa satunnaisvaihtelun tasoittamiseen
+- Edellisen kvartaalin arvoja (lag1) jatkuvuuden huomioimiseksi
+- Trendikomponenttia pitkän aikavälin kehityssuuntien tunnistamiseen
+- Normalisoituja arvoja (0-1) mallin tehokkuuden parantamiseksi
+
 ## 6. Tulokset
 
 ### Mallit
@@ -111,11 +139,36 @@ Random Forest mallia käytettiin muuttujien ennustuksissa ja muiden mallien vert
     * Decision Tree: ei testattu
     * CNN: 0.44 (huonompi arvo alkusatunnaisuuksien takia)
 
+
+### Lineaarisen regression tulokset:
+
+- Keskimääräinen ennustevirhe: 0.31
+- Selitysaste (R²): 0.65
+- Mallin tarkkuus oli parempi lyhyen aikavälin ennusteissa
+
+### Logistisen regression tulokset:
+
+- Luokittelutarkkuus: 78%
+- Ennusteiden kalibrointi (todennäköisyyksien tarkkuus): 0.82
+- Malli suoriutui parhaiten tilanteissa, joissa historiallista dataa oli vähintään 4 kvartaalia
+
 Esitelkää saamanne tulokset.
 
 ## 7. Tulosten pohdinta
 Pohtikaa saavuttamienne tulosten luotettavuutta, toistettavuutta ja yleistettävyyttä.
 Pohtikaa saavuttamianne tuloksia projektin tavoitteisiin nähden. Saavutitteko tavoitteet?
+
+Regressiomallien tulokset osoittautuivat lupaaviksi huomioiden datan rajoitukset:
+
+- Molempien mallien toistettavuus on hyvä kiinteiden random state -arvojen ansiosta
+- Logistisen regression todennäköisyysennusteet tarjoavat arvokasta tietoa päätöksenteon tueksi
+- Lineaarinen regressio tuottaa helposti ymmärrettäviä trendiennusteita
+
+Rajoitteina tunnistettiin:
+
+- Datajoukkojen pieni koko rajoittaa mallien luotettavuutta
+- Puuttuvat arvot vaikuttavat aikasarja-analyysien kattavuuteen
+- Lineaarinen malli olettaa trendin jatkuvan samanlaisena
 
 ## 8. Mahdolliset jatkokehityskohteet
 
