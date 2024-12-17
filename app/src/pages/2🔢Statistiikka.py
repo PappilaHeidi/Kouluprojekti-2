@@ -14,9 +14,13 @@ st.set_page_config(
 
 st.logo("https://kamk.fi/wp-content/uploads/2024/05/K-logo_rgb_150dpi10686.png", size="large")
 
-st.title("📟 Tilastoja")
+st.title("🧮 HOPP Tilastoja")
 st.markdown("""
-            Tältä sivulta löytyy erilaisia tilastoja, joissa vertaillaan **Kainuun** ja **Kansallisia** tuloksia.
+            Tältä sivulta löytyy erilaisia tilastoja perustuen asiakastyytyväisyyteen, joissa vertaillaan **Kainuun** ja **Kansallisia** tuloksia.
+
+            Tässä ollaan yhdistetty yksiköt: `AIKTEHOHO`, `EALAPSAIK` ja `ENSIHOITO`, ja laskettu uusille kysymyksille keskiarvot kvartaalien mukaan.
+
+            Agregoituun dataan perustuen voimme vertailla, kuinka Kainuun ja muun Suomen tulokset eroavat toisistaan laajemmassa mittakaavassa, ottaen huomioon eri yksiköiden yhdistetyt tulokset ja alueelliset erot.
 """)
 
 # Haetaan APIsta dataa
