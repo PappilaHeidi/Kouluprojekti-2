@@ -95,10 +95,11 @@ elif chosen_model == "CNN":
     )
     number = st.number_input("Syötä ennustettavien jaksojen määrä", value=2)
     st.write("Ennustetaan", number, "jaksoa")
-    budg_input = st.number_input("Syötä vuosibudjetti", value=25600)
-    workf_input = st.number_input("Syötä vuosibudjetti", value=129745)
+    budg_input = st.number_input("Syötä vuosibudjetti (mljr. eur)", value=25600)
+    workf_input = st.number_input("Syötä henkilöstömäärä", value=129745)
     st.write("Valittujen kysymysten määrä:", len(cnn_columns), "kpl")
     st.caption("Malli on opetettu datalla päivämäärään 1.9.2023 saakka.")
+    st.caption("Viime vuoden budjetti: 25600 mljr. euroa, Henkilöstömäärä (2022): 129745")
     result = cnn_model.cnn(model=model, cnn_columns=cnn_columns, lagged_features=df, lagged_columns=lagged_columns, steps=int(number), new_budget=budg_input, new_workforce=workf_input)
     results = cnn_model.plot_cnn_results()
     
@@ -112,6 +113,25 @@ elif chosen_model == "CNN":
         ''')
     expander.image("/app/src/images/konv.png")
 
+    expander1 = st.expander("Lähteet")
+    expander.write('''
+Vuoden 2020 - 2022 "Terveydenhuollon käyttömenot yhteensä" 
+excel-tiedosto: https://thl.fi/documents/155392151/0/Terveydenhuollon+menot+ja+rahoitus+2022,+ennakkotiedot_v2024_06_27+(1).xlsx/bf2f83ab-7dc0-b8a4-bb53-48f7a8597095?t=1719474968417
+
+## vuoden 2023 Hyvinvointialueiden rahoitus ja valtion toimenpiteetbudjetti
+Talousarvioesitys 2023: https://budjetti.vm.fi/sisalto.jsp?year=2023&lang=fi&maindoc=/2023/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:3:79:81: 
+ja 
+TILASTORAPORTTI 49/2024: https://www.julkari.fi/bitstream/handle/10024/149898/Sosiaali-%20ja%20terveyspalvelujen%20talous%202023.pdf?sequence=6&isAllowed=y
+
+
+Terveys- ja sosiaalipalvelujen henkilöstömittauksia on saatavilla vuodelle 2022 saakka. Datajoukkoon lisätään vuodesta 2020 eteenpäin olevat henkilöstön määrät, seuraavan vuoden kvartaaleihin. Henkilöstön määrä on yksi vaikuttava tekijä asiakastyytyväisyyteen, jolla voi olla vaikutusta seuraavien vuosien tyytyväisyyskyselyihin.
+
+2023-2024 dataa ei ole tällä hetkellä saatavilla. Ennustusta tehdessä, syötetään arvio henkilöstön määrästä.
+
+Lähteet: 
+
+TILASTORAPORTTI 41/2024: https://www.julkari.fi/bitstream/handle/10024/149430/Tilastoraportti_41_2024.pdf?sequence=1&isAllowed=y
+        ''')
 elif chosen_model == "Vertailu":
     st.write("Valitse kysymys")
     options = st.multiselect(
