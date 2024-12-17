@@ -25,10 +25,11 @@ PROJECT_SIGMA/
 │   │   ├── images/
 │   │   │   └── .webp              # Main page image
 │   │   ├── pages/
-│   │   │   ├── 🏥HOPP Analyysi    # Contains Logistic Regression analysis for HOPP data
-│   │   │   ├── 📉Lineaarisuus     # Contains Linear Regression analysis for HOPP data
-│   │   │   ├── 📊Logistiikka.py   # Contains interactive visualisation for HOPP data
-│   │   │   ├── 🔢Statistiikka.py  # Contains basic statics for Gold based HOPP data
+│   │   │   ├── 1🩻NES Analyysi     # Contains basic analysis for NES data
+│   │   │   ├── 2🏥HOPP Analyysi    # Contains Logistic Regression analysis for HOPP data
+│   │   │   ├── 3🔢Statistiikka.py  # Contains basic statics for Gold based HOPP data
+│   │   │   ├── 4📉Lineaarisuus     # Contains Linear Regression analysis for HOPP data
+│   │   │   ├── 5📊Logistiikka.py   # Contains interactive visualisation for HOPP data
 │   │   │   └── 🔍Data.py          # Contains 3 different tools for data
 │   │   ├── 🏠Etusivu.py           # Streamlit main page
 │   │   └── utils.py               # Utility functions for streamlit
@@ -58,7 +59,7 @@ PROJECT_SIGMA/
 │   │   ├── docs/       
 │   │   │   ├── images/            # Folder contains all images used in Mkdocs
 │   │   │   │   └── .png
-│   │   │   ├── weeks/             # Folder contains all the Sprint files
+│   │   │   ├── weeks/             # Folder contains all the Sprint and other documentation files
 │   │   │   │   └── sprints        
 │   │   │   ├── .pages             # Required for pages
 │   │   │   ├── index.md           # First page
