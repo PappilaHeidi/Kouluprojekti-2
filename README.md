@@ -10,7 +10,9 @@
 
 # Projektin kuvaus
 
-Tässä projektissa pyritään tarjoamaan Kainuun Hyvinvointialueelle data-analyysipalveluja, jotka tukevat päätöksentekoa ja parantavat palveluiden laatua. Analyysit keskittyvät erityisesti henkilöstön työtyytyväisyyteen (NES) ja asiakastyytyväisyyteen (HOPP), keskittyen tärkeimpiin osa-alueisiin, kuten johtamiseen, sitoutuneisuuteen ja asiakaspalvelun laatuun. Tavoitteena on tuottaa hyödyllistä tietoa, joka auttaa Kainuun Hyvinvointialuetta parantamaan toimintansa tehokkuutta, kehittämään henkilöstön hyvinvointia ja asiakastyytyväisyyttä sekä optimoimaan resurssien käyttöä alueen sosiaali- ja terveyspalveluissa sekä pelastustoimessa. Data-analyysit tarjoavat selkeitä ja käytännöllisiä näkökulmia, jotka tukevat strategisten päätösten tekemistä ja palveluiden kehittämistä Kainuun alueella.
+Tässä projektissa pyritään tarjoamaan Kainuun Hyvinvointialueelle data-analyysipalveluja, jotka tukevat päätöksentekoa ja parantavat palveluiden laatua. Analyysit keskittyvät erityisesti henkilöstön työtyytyväisyyteen (NES) ja asiakastyytyväisyyteen (HOPP), keskittyen tärkeimpiin osa-alueisiin, kuten johtamiseen, sitoutuneisuuteen ja asiakaspalvelun laatuun. Tavoitteena on tuottaa hyödyllistä tietoa, joka auttaa Kainuun Hyvinvointialuetta parantamaan toimintansa tehokkuutta, kehittämään henkilöstön hyvinvointia ja asiakastyytyväisyyttä sekä optimoimaan resurssien käyttöä alueen sosiaali- ja terveyspalveluissa sekä pelastustoimessa.
+
+Data-analyysit tarjoavat selkeitä ja käytännöllisiä näkökulmia, jotka tukevat strategisten päätösten tekemistä ja palveluiden kehittämistä Kainuun alueella, ja myös ennustuksia tulevaan. Näiden ennusteiden avulla voidaan esimerkiksi arvioida henkilöstö- ja asiakastyytyväisyyden kehityssuuntia, tunnistaa mahdollisia riskejä ja varautua niihin ennakolta sekä suunnitella resurssien allokointia entistä tehokkaammin.
 
 # Projektin rakenne
 **Sisältää projekti kansion rakenteen**
@@ -20,14 +22,17 @@ PROJECT_SIGMA/
 │
 ├── app/                           # Container 3: Streamlit app
 │   ├── .streamlit/
-│   │   └── config.toml
+│   │   └── config.toml            # For streamlit configuration
 │   ├── src/                       # Source code for Streamlit
 │   │   ├── images/
 │   │   │   └── .webp              # Main page image
 │   │   ├── pages/
-│   │   │   ├── HOPP_LR.py         # Contains Linear Regression analysis for HOPP data
-│   │   │   ├── HOPPlop.py         # Contains interactive visualisation for HOPP data
-│   │   │   ├── 📊Stats.py         # Contains basic statics for HOPP and NES data
+│   │   │   ├── 1🩻NES Analyysi     # Contains basic analysis for NES data
+│   │   │   ├── 2🏥HOPP Analyysi    # Contains Logistic Regression analysis for HOPP data
+│   │   │   ├── 3🔢Statistiikka.py  # Contains basic statics for Gold based HOPP data
+│   │   │   ├── 4📉Lineaarisuus     # Contains Linear Regression analysis for HOPP data
+│   │   │   ├── 5📊Logistiikka.py   # Contains interactive visualisation for HOPP data
+│   │   │   ├── 6🛠️HOPP Tool        # Contains prediction tool based on Machine Learning models
 │   │   │   └── 🔍Data.py          # Contains 3 different tools for data
 │   │   ├── 🏠Etusivu.py           # Streamlit main page
 │   │   └── utils.py               # Utility functions for streamlit
@@ -57,7 +62,7 @@ PROJECT_SIGMA/
 │   │   ├── docs/       
 │   │   │   ├── images/            # Folder contains all images used in Mkdocs
 │   │   │   │   └── .png
-│   │   │   ├── weeks/             # Folder contains all the Sprint files
+│   │   │   ├── weeks/             # Folder contains all the Sprint and other documentation files
 │   │   │   │   └── sprints        
 │   │   │   ├── .pages             # Required for pages
 │   │   │   ├── index.md           # First page

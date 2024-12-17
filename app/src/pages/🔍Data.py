@@ -21,7 +21,7 @@ st.header("🛢️☁️ Datan ingestointi → CosmosDB")
 st.markdown("""
             Tällä työkalulla voit ladata `XLSX-tiedostoja` ja siirtää datan `CosmosDB-tietokantaan`.
 
-            Lataa tiedosto, jonka jälkeen voit muuntaa sen CSV-muotoon painamalla "Download CSV file" tai siirtää sen tietokantaan painamalla "Ingest Data".
+            Lataa tiedosto, jonka jälkeen voit muuntaa sen *CSV*-muotoon painamalla "**Download CSV file**" tai siirtää sen tietokantaan painamalla "**Ingest Data**".
 """)
 
 # File uploader widget
@@ -74,7 +74,11 @@ st.header("🖥️💡 Hae Dataa Tietokannasta")
 st.markdown("""
             Tällä työkalulla voit tarkastella tietokannasta löytyviä eri tasojen tauluja.
 
-            Tietokannasta löytyy pronssi-, hopea- ja kultatason tauluja, jotka tarjoavat erilaisia tietosisältöjä ja analyysimahdollisuuksia.""")
+            Tietokannasta löytyy **pronssi**-, **hopea**- ja **kultatason** tauluja, jotka tarjoavat erilaisia tietosisältöjä ja analyysimahdollisuuksia.""")
+
+# Kun st.Button painaa uudelleen, niin teksti menee piiloon
+if 'show_text' not in st.session_state:
+    st.session_state.show_text = False
 
 col1, col2, col3 = st.columns(3)
 with col1:
@@ -82,27 +86,40 @@ with col1:
     st.write("Valitse HOPP tai NES")
     # Streamlit button
     if st.button("Fetch Bronze HOPP Data"):
-        fetch_data(endpoint_bronze_hopp, "Bronze HOPP")
+        st.session_state.show_text = not st.session_state.show_text
+        if st.session_state.show_text:
+            fetch_data(endpoint_bronze_hopp, "Bronze HOPP")
 
     if st.button("Fetch Bronze NES Data"):
-        fetch_data(endpoint_bronze_nes, "Bronze NES")
+        st.session_state.show_text = not st.session_state.show_text
+        if st.session_state.show_text:
+            fetch_data(endpoint_bronze_nes, "Bronze NES")
 
 with col2:
     st.header("🥈 Hopeataso")
     st.write("Valitse HOPP tai NES")
     if st.button("Fetch Silver HOPP Data"):
-        fetch_data(endpoint_silver_hopp, "Silver HOPP")
+        st.session_state.show_text = not st.session_state.show_text
+        if st.session_state.show_text:
+            fetch_data(endpoint_silver_hopp, "Silver HOPP")
 
     if st.button("Fetch Silver NES Data"):
-        fetch_data(endpoint_silver_nes, "Silver NES")
+        st.session_state.show_text = not st.session_state.show_text
+        if st.session_state.show_text:
+            fetch_data(endpoint_silver_nes, "Silver NES")
 
 with col3:
     st.header("🥇 Kultataso")
     st.write("Valitse HOPP tai NES")
     if st.button("Fetch Gold HOPP Data"):
-        fetch_data(endpoint_gold_hopp, "Gold HOPP")
+        st.session_state.show_text = not st.session_state.show_text
+        if st.session_state.show_text:
+            fetch_data(endpoint_gold_hopp, "Gold HOPP")
+
     if st.button("Fetch Gold NES Data"):
-        fetch_data(endpoint_bronze_nes, "Gold NES")
+        st.session_state.show_text = not st.session_state.show_text
+        if st.session_state.show_text:
+            fetch_data(endpoint_bronze_nes, "Gold NES")
 
 st.header("🔍 SQL Kyselyjä")
 st.markdown("""

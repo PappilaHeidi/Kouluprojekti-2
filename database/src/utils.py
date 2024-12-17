@@ -18,8 +18,7 @@ class MojovaModels:
             print(f"Error initializing Jinja environment: {str(e)}")
             raise
     
-    def get_query(self, template):
-        # TODO: Add templates for gold
+    def get_query(self, template, method='CNN'):
         try:
             match template:
                 case 'bronze_hopp':
@@ -68,6 +67,19 @@ class MojovaModels:
                         filter_column="c['/medallion']",
                         filter_value="gold_hopp"
                     )
+                    return query_template
+                
+                case 'model':
+                    if method != 'CNN':
+                        sql_template = self.env.get_template('gold.sql')
+                    else:
+                        sql_template = self.env.get_template('model.sql')
+                    query_template = sql_template.render(
+                        table_name="c",
+                        filter_column="c['/method']",
+                        filter_value=method
+                    )
+                    print(query_template)
                     return query_template
                 
                 case _:
