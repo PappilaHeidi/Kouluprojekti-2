@@ -15,6 +15,21 @@ import time
 import utils
 from models import MojovaTool as MT
 
+st.set_page_config(
+    page_title= "Työkalu",
+    page_icon= "🛠️",
+    layout= "wide"
+)
+
+st.logo("https://kamk.fi/wp-content/uploads/2024/05/K-logo_rgb_150dpi10686.png", size="large")
+
+st.title("🛠️ HOPP Ennustustyökalu")
+st.markdown("""
+            Tältä sivulta löytyy **HOPP**-datan ennustustyökalu, joka hyödyntää koneoppimismalleja asiakastyytyväisyyden analysointiin ja ennustamiseen.
+            
+            Valitse käytettävä malli, tarkastele kysymyskohtaisia tuloksia ja vertaile kansallisia tuloksia.
+""")
+
 st.image("/app/src/images/ai_bg.png")
 endpoint_model_hopp = "http://database:8081/get/model/CNN"
 endpoint_df_hopp = "http://database:8081/get/model/dataframe"
