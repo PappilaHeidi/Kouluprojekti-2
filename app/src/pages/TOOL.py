@@ -15,6 +15,7 @@ import time
 import utils
 from models import MojovaTool as MT
 
+st.image("/app/src/images/ai_bg.png")
 endpoint_model_hopp = "http://database:8081/get/model/CNN"
 endpoint_df_hopp = "http://database:8081/get/model/dataframe"
 
@@ -62,7 +63,7 @@ chosen_model = st.radio(
     "Valitse käytettävä malli",
     ["Random Forest", "CNN", "Vertailu"],
     captions=[
-        "Päätöspuu",
+        "Yksinkertainen ennustus",
         "Syväoppimismalli usealle muuttujalle",
         "Vertaile kansallisia tuloksia"
         ],
@@ -86,10 +87,31 @@ if chosen_model == "Random Forest":
     st.write(f"Seuraavan kauden tyytyväisyysennustus: {pred:.3f}")
 
 elif chosen_model == "CNN":
-    st.write("VAlitsit CNN")
     cnn_model = MT()
-    result = cnn_model.cnn(model=model, lagged_features=df, lagged_columns=lagged_columns, )
-    st.write(result)
+    st.write("Näytä ennustukset kysymyskohtaisesti")
+    cnn_columns = st.multiselect(
+    "Kysymykset",
+    target_columns[2:-6],
+    )
+    number = st.number_input("Syötä ennustettavien jaksojen määrä", value=2)
+    st.write("Ennustetaan", number, "jaksoa")
+    budg_input = st.number_input("Syötä vuosibudjetti", value=25600)
+    workf_input = st.number_input("Syötä vuosibudjetti", value=129745)
+    st.write("Valittujen kysymysten määrä:", len(cnn_columns), "kpl")
+    st.caption("Malli on opetettu datalla päivämäärään 1.9.2023 saakka.")
+    result = cnn_model.cnn(model=model, cnn_columns=cnn_columns, lagged_features=df, lagged_columns=lagged_columns, steps=int(number), new_budget=budg_input, new_workforce=workf_input)
+    results = cnn_model.plot_cnn_results()
+    
+    expander = st.expander("Lisätietoja")
+    expander.write('''
+        Yksidimensionaalinen konvoluutioverkko käsittelee vektorijonoa esim. sanoja tai lukuja, ikään kuin se olisi kuva. Konvoluutiosuodin liikkuu jonoa pitkin yhden ulottuvuuden mukaisesti, ja se oppii kaavoja tai lyhyitä alijaksoja. Mallia käytettiin projektissa annettuun aikajaksotettuun kyselydataan ja seuraavien jaksojen ennustamiseen.
+
+        CNN-mallilla saavutettiin paremmat tulokset klassiseen päätöspuu-algoritmiin verrattuna. Mallit testattiin takaisintestausmenetelmällä (Backtesting), jossa RMSE-arvo otettiin jokaisen laajenevan ikkunoinnin (expanding window) iteroinnilla. 
+
+        Testi- ja ennustusarvojen konvergoitumista oli havaittavissa, vaikka aikajaksotettu datajoukko oli vain yhdeksän havaintoa (observation) pitkä, josta vähennettin vielä yksi rivi lag-arvoa varten.
+        ''')
+    expander.image("/app/src/images/konv.png")
+
 elif chosen_model == "Vertailu":
     st.write("Valitse kysymys")
     options = st.multiselect(
@@ -99,6 +121,7 @@ elif chosen_model == "Vertailu":
     st.write("Valittujen kysymysten määrä:", len(options), "kpl")
     compare = MT()
     compare.plot_all_lines(*utils.transform_silver_hopp_for_analytics(), columns=options)
+  
 
 
         
