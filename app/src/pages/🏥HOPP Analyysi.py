@@ -17,7 +17,7 @@ st.set_page_config(
 st.title("🏥 HOPP Asiakaspalaute dashboard")
 
 st.markdown("""
-## Tervetuloa HOPPlop-analytiikkatyökaluun!
+## Tervetuloa HOPP-analytiikkatyökaluun!
 
 Tämä työkalu auttaa sinua analysoimaan hoitotyön palautedataa eri yksiköistä. Voit tarkastella trendejä, vertailla yksiköitä ja syventyä yksityiskohtaisiin jakaumiin.
 
@@ -146,7 +146,7 @@ with tab1:
             )
         )
         
-        # Uusi väripaletti
+        # Käppyrä värit
         colors = {
             'AIKTEHOHO': '#1f77b4',    # Sininen
             'EALAPSAIK': '#17a2b8',    # Turkoosi
@@ -359,13 +359,3 @@ with col4:
     )
 
 
-st.markdown("""
----
-### 💡 Vinkkejä datan tulkintaan:
-- Tarkastele trendejä pidemmällä aikavälillä yksittäisten arvojen sijaan
-- Vertaile yksiköiden tuloksia kansalliseen keskiarvoon
-- Kiinnitä huomiota sekä huippuarvoihin että kehityskohteisiin
-- Hyödynnä lämpökarttaa kokonaiskuvan hahmottamiseen
-
-*Tarvitsetko apua työkalun käytössä? Ota yhteyttä [tukeen](mailto:support@example.com)*
-""")
