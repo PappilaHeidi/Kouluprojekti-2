@@ -140,17 +140,17 @@ Molemmissa malleissa datan esikäsittely oli kriittistä. Aikasarjaominaisuuksin
     * CNN: 0.44 (huonompi arvo alkusatunnaisuuksien takia)
 
 
-### Lineaarisen regression tulokset:
+### Lineaarisen regression käyttö:
 
-- Keskimääräinen ennustevirhe: 0.31
-- Selitysaste (R²): 0.65
-- Mallin tarkkuus oli parempi lyhyen aikavälin ennusteissa
+- Malli tuottaa viiden kvartaalin ennusteet perustuen historialliseen dataan
+- Visualisointi näyttää toteutuneet arvot (sininen viiva) ja ennusteet (punainen katkoviiva)
+- Ennusteiden tarkkuutta rajoittaa datan vähäinen määrä
 
-### Logistisen regression tulokset:
+### Logistisen regression käyttö:
 
-- Luokittelutarkkuus: 78%
-- Ennusteiden kalibrointi (todennäköisyyksien tarkkuus): 0.82
-- Malli suoriutui parhaiten tilanteissa, joissa historiallista dataa oli vähintään 4 kvartaalia
+- Malli ennustaa todennäköisyyden korkeille arvosanoille (≥4.5)
+- Tulokset visualisoidaan trendinuolilla (↑/↓) ja prosenttiluvuilla
+- Ennusteet perustuvat 1-3 edellisen kvartaalin keskiarvoihin
 
 Esitelkää saamanne tulokset.
 
