@@ -21,8 +21,26 @@ CONTAINER_MAPPING = {
     'bronze': 'Analytics',
     'silver': 'Analytics',
     'gold': 'Analytics',
-    'models': 'Models'
+    'model': 'Model'
 }
+# Endpoint for serialized models
+@app.get("/get/model/{method}")
+async def get_model(method: str):
+    """Get data from specified layer"""
+
+    logger.info(f"Retrieving {method} from database")
+    
+    try:
+        db = MojovaDB(CONTAINER_MAPPING['model'])
+        db.connect()
+        model = MojovaModels()
+        query = model.get_query('model', method)
+        logger.info(f"Executing query: {query}")
+        return db.query(query) or []
+    except Exception as e:
+        logger.error(f"Data retrieval failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 # Upload endpoint for uploading data to database (Used to upload Bronze data)
 @app.post("/upload/{layer}/{source}")

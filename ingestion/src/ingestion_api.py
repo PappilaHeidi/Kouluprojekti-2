@@ -35,9 +35,21 @@ async def ingest(file: UploadFile = File(...)):
     if pk == 'nes':
         itool.read_excel(file_path)
         print(itool.df_from_excel)
-
     # process the file
     itool.column_clean_up(itool.df_from_excel)
+    
+    dataset_year = '2024'
+    if 'summa' in file.filename:
+        dataset_type = 'summa'
+
+    if 'Raaka' in file.filename or 'Kopio' in file.filename:
+        dataset_type = 'raaka'
+
+    if '2023' in file.filename:
+        dataset_year = '2023'
+
+    itool.add_extra_columns(dataset_year, dataset_type)
+
 
     # save file in json format locally
     itool.json_to_file(file.filename)
@@ -48,7 +60,6 @@ async def ingest(file: UploadFile = File(...)):
     # set partition key for cosmosdb
     # we will use medallion architecture as partition keys
     itool.set_partitionkey(medallion=('bronze'+ '_' + pk))
-    print(itool.json_data)
     try:
         database_response = requests.post(f"http://database:8081/upload/bronze/{pk}", json=itool.json_data)
 
