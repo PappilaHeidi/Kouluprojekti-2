@@ -32,6 +32,7 @@ PROJECT_SIGMA/
 │   │   │   ├── 3🔢Statistiikka.py  # Contains basic statics for Gold based HOPP data
 │   │   │   ├── 4📉Lineaarisuus     # Contains Linear Regression analysis for HOPP data
 │   │   │   ├── 5📊Logistiikka.py   # Contains interactive visualisation for HOPP data
+│   │   │   ├── 6🛠️HOPP Tool        # Contains prediction tool based on Machine Learning models
 │   │   │   └── 🔍Data.py          # Contains 3 different tools for data
 │   │   ├── 🏠Etusivu.py           # Streamlit main page
 │   │   └── utils.py               # Utility functions for streamlit
