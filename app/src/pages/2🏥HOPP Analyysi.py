@@ -14,6 +14,8 @@ st.set_page_config(
     layout= "wide"
 )
 
+st.logo("https://kamk.fi/wp-content/uploads/2024/05/K-logo_rgb_150dpi10686.png", size="large")
+
 st.title("🏥 HOPP Asiakaspalaute dashboard")
 
 st.markdown("""

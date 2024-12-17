@@ -3,6 +3,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import requests
+import plotly.express as px
+import plotly.graph_objects as go
+
+st.set_page_config(
+    page_title= "NES_Analyysi",
+    page_icon= "🩺",
+    layout= "wide"
+)
+
+st.logo("https://kamk.fi/wp-content/uploads/2024/05/K-logo_rgb_150dpi10686.png", size="large")
 
 # API URL
 api_url = "http://database:8081/get/bronze/nes"
@@ -91,18 +101,32 @@ def visualisoi_keskiarvojen_vertailu(yksikko, kysymys):
         st.warning("Keskiarvoa ei voitu laskea. Tarkista datan arvot.")
         return
 
-    # Piirrä viivakaavio
-    plt.figure(figsize=(10, 6))
-    plt.plot([2023, 2024], [mean_2023, mean_2024], marker='o', linestyle='-', color='blue', label=yksikko)
+    fig = go.Figure()
 
-    plt.xticks([2023, 2024])
-    plt.xlabel('Vuosi')
-    plt.ylabel('Keskiarvo (asteikko 1-6)')
-    plt.title(f"Yksikön {yksikko} keskiarvojen vertailu kysymykselle '{kysymys}'")
-    plt.ylim(1, 6)
-    plt.grid(axis='y', linestyle='--', alpha=0.7)
-    plt.legend()
-    st.pyplot(plt)
+    # Lisää viiva 2023 vuoden keskiarvoille
+    fig.add_trace(go.Scatter(
+        x=[2023, 2024],
+        y=[mean_2023, mean_2024],
+        mode='lines+markers',
+        name=yksikko,
+        line=dict(color='blue', dash='solid'),
+        marker=dict(color='blue', size=8),
+    ))
+
+    # Asetetaan otsikko ja akselien nimet
+    fig.update_layout(
+        title=f"Yksikön {yksikko} keskiarvojen vertailu kysymykselle '{kysymys}'",
+        xaxis_title="Vuosi",
+        yaxis_title="Keskiarvo (asteikko 1-6)",
+        yaxis=dict(range=[1, 6]),
+        template="plotly_white",  # Valkoinen tausta
+        showlegend=True,
+        xaxis=dict(tickmode='array', tickvals=[2023, 2024]),
+        plot_bgcolor='white'
+    )
+
+    # Näytetään kaavio Streamlitissä
+    st.plotly_chart(fig)
 
 
 # Radar-kaavio
@@ -124,23 +148,59 @@ def visualisoi_radar(yksikko):
     angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
     angles += angles[:1]
 
-    st.subheader("Radar-kaavio: Teemojen vertailu")
-    st.markdown("Visualisoi valitun yksikön teemojen keskiarvot vuosina 2023 ja 2024.")
+    st.header("📡 Radar-kaavio: Teemojen vertailu")
+    st.markdown("""**Radar-kaavio** antaa visuaalisen kuvan, jossa näkyy eri teemojen (esim. johtaminen, työolosuhteet, tiimityö) kehitys, ja se havainnollistaa, miten valitun yksikön suoritustaso on muuttunut ajassa.
+                
+Valitse sivupalkista yksikkö, jonka teemoja haluat tarkastella.
+                
+""")
 
-    fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(polar=True))
-    ax.plot(angles, values_2023, label="2023", linestyle="--")
-    ax.plot(angles, values_2024, label="2024")
-    ax.fill(angles, values_2023, alpha=0.2)
-    ax.fill(angles, values_2024, alpha=0.4)
-    ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(labels)
-    ax.legend(loc="upper right")
-    st.pyplot(fig)
+    # Lasketaan kulmat, jotka jakavat ympyrän tasaisesti
+    angles = [n / float(len(labels)) * 2 * 3.141592653589793 for n in range(len(labels))]
+    angles += angles[:1]  # Suljetaan ympyrä
+
+    # Luodaan radar-kaavio Plotlyllä
+    fig = go.Figure()
+
+    # 2023 data
+    fig.add_trace(go.Scatterpolar(
+        r=values_2023 + [values_2023[0]],  # Suljetaan ympyrä
+        theta=labels,  # Suljetaan ympyrä
+        fill='toself',  # Täyttää alueen
+        name='2023',
+        line=dict(color='blue', dash='dash')  # Tyylitellään viiva
+    ))
+
+    # 2024 data
+    fig.add_trace(go.Scatterpolar(
+        r=values_2024 + [values_2024[0]],  # Suljetaan ympyrä
+        theta=labels,  # Suljetaan ympyrä
+        fill='toself',  # Täyttää alueen
+        name='2024',
+        line=dict(color='red')  # Tyylitellään viiva
+    ))
+
+    # Asetetaan otsikko ja muut visuaaliset asetukset
+    fig.update_layout(
+        polar=dict(
+            radialaxis=dict(
+                visible=True,
+                color="black",
+                range=[0, 6]  # Asteikko 1-6
+            )
+        ),
+        title="Radar-kaavio: 2023 vs 2024",
+        showlegend=True
+    )
+
+    # Näytetään kaavio Streamlitissä
+    st.plotly_chart(fig)
 
 def visualisoi_kansalliset_keskiarvot():
-        st.subheader("Kansalliset keskiarvot")
+        st.header("🇫🇮 Kansalliset keskiarvot")
         st.markdown("""
         Kansalliset keskiarvot tarjoavat vertailukohdan yksiköiden ja teemojen tuloksille.  
+                    
         Voit arvioida, miten yksikkösi suoriutuu suhteessa kansalliseen keskiarvoon.
         """)
 
@@ -156,36 +216,64 @@ def visualisoi_kansalliset_keskiarvot():
         kansallinen_cleaned = kansallinen_data[kysymykset_kansallinen].apply(pd.to_numeric, errors='coerce')
         kansallinen_mean = kansallinen_cleaned.mean()
 
-        # Piirrä pylväsdiagrammi
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.bar(kansallinen_mean.index, kansallinen_mean.values, color='skyblue')
-        ax.set_title("Kansalliset keskiarvot teemoille")
-        ax.set_ylabel("Keskiarvo (asteikko 1-6)")
-        ax.set_xlabel("Teemat")
-        plt.xticks(rotation=45, ha='right')
-        plt.ylim(1, 6)
-        plt.grid(axis='y', linestyle='--', alpha=0.7)
-        st.pyplot(fig)
+        # Muodostetaan DataFrame, jotta voidaan käyttää bar_chart
+        df_kansallinen = kansallinen_mean.reset_index()
+        df_kansallinen.columns = ['Teema', 'Keskiarvo']
+
+        # Plotly pylväsdiagrammi
+        fig = px.bar(df_kansallinen, x='Teema', y='Keskiarvo', title="Kansalliset keskiarvot teemoille", color_discrete_sequence=["#002F6C"],
+                    labels={'Teema': 'Teemat', 'Keskiarvo': 'Keskiarvo (asteikko 1-6)'})
+        
+        st.plotly_chart(fig)
 
 
 # Käyttöliittymä
-st.title("NES Kyselytulosten Visualisointi")
+st.title("🩻 NES Kyselytulosten Visualisointi")
+
+st.markdown("""      
+    Tältä sivulta löytyy analysointityökalu **NES**-datalle, eli henkilöstön työtyytyväisyyskyselyyn.
+
+    Analysoinnissa voit tarkastella yksittäisiä kysymyksiä, teemojen kokonaisuuksia sekä suhteuttaa tuloksia kansalliseen tasoon.
+            
+    ### Käytön vaiheet:
+            
+    1. **Valitse yksikkö ja kysymys sivupalkista:**
+            
+        * Sivupalkin valinnat ohjaavat viivakaavion ja radar-kaavion sisältöä.
+    
+        * Yksikön ja kysymyksen valinnan jälkeen keskiarvot lasketaan ja kaaviot päivittyvät.
+            
+    2. **Analysoi viivakaavion kehitystä:**
+            
+        * Tuloksia voidaan tarkastella ajan suhteen yksittäisen kysymyksen osalta.
+            
+    3. **Tarkastele teemojen kokonaisuutta radar-kaaviolla:**
+            
+        * Radar-kaavio antaa kokonaiskuvan teemojen vahvuuksista ja muutoksista.
+            
+    4. **Vertaa kansalliseen keskiarvoon:**
+            
+        * Pylväsdiagrammilla saat yleiskuvan kansallisista tuloksista.
+""")
 
 # Valinnat sivupalkissa
 selected_unit = st.sidebar.selectbox("Valitse yksikkö:", yksikot)
 selected_question = st.sidebar.selectbox("Valitse kysymys:", kysymykset)
 
 # Keskiarvot yksittäiselle kysymykselle
-st.header("Viivakaavio: Keskiarvojen tarkastelu")
+st.header("📈 Viivakaavio: Keskiarvojen tarkastelu")
+st.markdown("""
+    **Viivakaavio** näyttää valitun yksikön keskiarvon muutoksen tietyssä kysymyksessä vuosina 2023 ja 2024, tarjoten visuaalisen kuvan siitä, onko työtyytyväisyys parantunut, heikentynyt vai pysynyt ennallaan.
+
+    Valitse sivupalkista yksikkö ja kysymys, joita haluat tarkastella. 
+""")
 visualisoi_keskiarvojen_vertailu(selected_unit, selected_question)
 
 # Radar-kaavio
-st.header("Radar-kaavio teemojen vertailulle")
 visualisoi_radar(selected_unit)
 
 # Kansalliset keskiarvot
-if st.button("Näytä kansalliset keskiarvot"):
-    visualisoi_kansalliset_keskiarvot()
+visualisoi_kansalliset_keskiarvot()
 
 
 #st.write("Vuoden 2023 sarakkeet:", data_2023.columns)

@@ -1,9 +1,5 @@
 # **PROJEKTIOPINNOT 2 - Mojovat (project-sigma)**
 
-## **Meistä**
-
-Joku tarina meistä???
-
 ## **Projektisuunnitelma**
 
 ### 1. Johdanto
@@ -67,7 +63,7 @@ NES: noin 165 Kib
 Projektin tavoitteena on käsitellä saatu data, sekä suorittaa erilaisia analyyseja dataan pohjautuen. Datan käsittelyyn käytettävät metodit, sekä tulosten oikeellisuus ja luotettavuus arvioidaan projektin aikana. Toteutuminen voidaan todentaa edellämainitulla loppuanalyysilla. 
 
 ### 6. Työkalut
-#### Projektissa käytetyt työkalut
+#### *Projektissa käytetyt työkalut*
 
 **Kehitystyökalut**
 

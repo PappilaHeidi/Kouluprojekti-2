@@ -10,7 +10,7 @@ st.set_page_config(
 st.logo("https://kamk.fi/wp-content/uploads/2024/05/K-logo_rgb_150dpi10686.png", size="large")
 
 # Sivun otsikko ja teksti
-st.title("🚀 Mojovat: Ennusteita datan pohjalta ")
+st.title("🚀 Mojovat: Ennusteita datan pohjalta")
 
 # Tekoälyllä luotu kuva
 st.image('/app/src/images/kuva.webp', caption='Kuva on luotu käyttäen OpenAI DALL·E 3 -työkalua.')
