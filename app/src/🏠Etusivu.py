@@ -65,7 +65,7 @@ st.markdown("""
 
 st.header("🎉 Projektin lopputulos")
 
-st.markdown("TODO")
+st.markdown("Ryhmänä saatiin tehtävänannon mukaiset tulokset toteutettua")
 
 # Repositorin linkki
 st.header("💾 Repositori")
