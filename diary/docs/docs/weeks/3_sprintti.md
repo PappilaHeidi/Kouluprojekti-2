@@ -16,7 +16,7 @@ Kolmannessa sprintissä keskityimme mallien ennustuksiin ja tämän lisäksi kes
 
 ## **Suoritus**
 
-**Ennustus**: Toteutimme ennustemallit, jotka tuottavat tarkat kvartaalikohtaiset ennusteet. Ennusteet validoitiin historiallisella datalla ja ovat nyt käytettävissä sovelluksessa.
+**Ennustus**: Toteutimme ennustemallit, jotka tuottavat tarkat kvartaalikohtaiset ennusteet (Lineaari ja Logistinen). Ennusteet validoitiin historiallisella datalla ja ovat nyt käytettävissä sovelluksessa.
 
 **Ennustusten integrointi**: Integroimme ennusteet Streamlit-sovellukseen, jossa käyttäjät voivat tarkastella niitä visuaalisesti. Tämä parantaa ennusteiden saavutettavuutta ja käyttöä päätöksenteossa.
 

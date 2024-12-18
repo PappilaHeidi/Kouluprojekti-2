@@ -1,4 +1,4 @@
-# Data ja Tietokanta
+# **Data ja Tietokanta**
 
 ## Putki
 
@@ -72,6 +72,5 @@ Kooste datajoukosta (kansallinen kooste), etsitään  kvartaalit joukkoerotuksel
 
 Data ryhmitellän kvartaalittain ja lasketaan kaikkien kysmysten keskiarvot, molemmista datajoukoista (kooste ja Kainuu). Lasketaan Kainuun ja koosteen yhteisten kvartaalien arvojen erotus, jota käytetään puuttuvien kvartaalien korjauskertoimena. Lisätään korjauskertoimet kooste-datajoukon apumuuttujaan ja lisätään uudet rivit Kainuun datajoukkoot. Maximi arvo asetetaan viiteen (clip).
 
-![alt text](../images/image4.png)
-
-*Kuvaaja. Kainuu seuraa Koosteen kysymyksien saman kaltaista kaavaa*
+![KUVAAJAT](../images/image4.png)
+**Kuvaajat**. *Kainuu seuraa Koosteen kysymyksien saman kaltaista kaavaa*

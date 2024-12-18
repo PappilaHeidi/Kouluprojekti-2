@@ -65,7 +65,18 @@ st.markdown("""
 
 st.header("🎉 Projektin lopputulos")
 
-st.markdown("Ryhmänä saatiin tehtävänannon mukaiset tulokset toteutettua")
+st.markdown("""
+            **Ryhmänä saavutimme tehtävänannon mukaiset tavoitteet ja tuotimme merkittäviä tuloksia.** 
+
+            Projektin aikana loimme selkeät visualisoinnit ja ennustemallit, jotka tarjoavat Kainuun Hyvinvointialueelle konkreettisia työkaluja asiakas- ja henkilöstötyytyväisyyden kehittämiseen. 
+
+            **Avainkohdat:**
+            - Yksiköiden tulosten analyysi suhteessa kansallisiin keskiarvoihin.  
+            - Käyttäjäystävälliset työkalut vastausjakaumien ja trendien havainnointiin.  
+            - Selkeät havainnot päätöksenteon ja resurssien kohdentamisen tueksi.  
+
+            Tulokset tukevat päätöksentekoa ja tarjoavat selkeän pohjan jatkuvalle kehitykselle.
+""")
 
 # Repositorin linkki
 st.header("💾 Repositori")
@@ -81,5 +92,11 @@ st.markdown('<iframe src="https://app.clockify.me/shared/673c996fa5b53c67d258d04
 
 st.header("🗂️ GitLab Stats")
 
-st.markdown("TODO")
+st.markdown("Tässä ovat vielä Mojovien **sprintti**-, **issue**- ja **commit**-tilastot.")
 
+st.header("**Sprintit**")
+st.image('/app/src/images/milestones.png', caption='Kuvassa näkyvät toteutetut sprintit, niiden aikataulut ja issueiden määrä kussakin sprintissä.')
+
+st.image('/app/src/images/issuet.png', caption='Kuvassa näkyvät kuukausikohtaiset määrät issueiden luomiselle ja sulkemiselle..')
+
+st.image('/app/src/images/commitit.png', caption='Kuvassa näkyvät kuukausikohtaiset commitit main-haaraan..')

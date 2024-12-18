@@ -1,4 +1,4 @@
-# Logistinen Regressioanalyysi HOPP-datalle
+# **Logistinen Regressioanalyysi HOPP-datalle**
 
 ## Järjestelmän yleiskuvaus
 
@@ -57,12 +57,12 @@ Järjestelmä tarjoaa monipuolisen visualisoinnin:
 - Kansallinen keskiarvo esitetään mustalla katkoviivalla vertailukohtana
 - Värikoodaus erottaa yksiköt: AIKTEHOHO (sininen), EALAPSAIK (turkoosi), ENSIHOITO (indigo)
 
-![alt text](../images/log1.PNG)
+![LOG 1](../images/log1.PNG)
+**Kuva 1:** Kuvassa ennusteet esitetään selkeässä taulukkomuodossa, jossa:
 
-
-Ennusteet esitetään selkeässä taulukkomuodossa, jossa:
 - Nykyarvo perustuu viimeisimpien kvartaalien keskiarvoon
 - Trendin suunta merkitään nuolilla (↑/↓)
 - Todennäköisyys korkealle arviolle (≥4.5) esitetään prosentteina
 
-![alt text](../images/log2.PNG)
+![LOG 2](../images/log2.PNG)
+**Kuva 2:** Kuvassa näkyvät **Logistisen regression** tulokset, joista käy ilmi, mihin suuntaan tietyn kysymyksen ennuste on menossa ja sen todennäköisyys.
