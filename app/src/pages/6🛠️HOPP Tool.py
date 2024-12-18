@@ -130,22 +130,23 @@ elif chosen_model == "CNN":
 
     expander1 = st.expander("Lähteet")
     expander.write('''
-Vuoden 2020 - 2022 "Terveydenhuollon käyttömenot yhteensä" 
-excel-tiedosto: https://thl.fi/documents/155392151/0/Terveydenhuollon+menot+ja+rahoitus+2022,+ennakkotiedot_v2024_06_27+(1).xlsx/bf2f83ab-7dc0-b8a4-bb53-48f7a8597095?t=1719474968417
 
-## vuoden 2023 Hyvinvointialueiden rahoitus ja valtion toimenpiteetbudjetti
-Talousarvioesitys 2023: https://budjetti.vm.fi/sisalto.jsp?year=2023&lang=fi&maindoc=/2023/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:3:79:81: 
-ja 
-TILASTORAPORTTI 49/2024: https://www.julkari.fi/bitstream/handle/10024/149898/Sosiaali-%20ja%20terveyspalvelujen%20talous%202023.pdf?sequence=6&isAllowed=y
-
+## Vuoden 2023 Hyvinvointialueiden rahoitus ja valtion toimenpiteetbudjetti
 
 Terveys- ja sosiaalipalvelujen henkilöstömittauksia on saatavilla vuodelle 2022 saakka. Datajoukkoon lisätään vuodesta 2020 eteenpäin olevat henkilöstön määrät, seuraavan vuoden kvartaaleihin. Henkilöstön määrä on yksi vaikuttava tekijä asiakastyytyväisyyteen, jolla voi olla vaikutusta seuraavien vuosien tyytyväisyyskyselyihin.
 
 2023-2024 dataa ei ole tällä hetkellä saatavilla. Ennustusta tehdessä, syötetään arvio henkilöstön määrästä.
 
 Lähteet: 
+                   
+* [Vuoden 2020 - 2022 "Terveydenhuollon käyttömenot yhteensä" 
+excel-tiedosto](https://thl.fi/documents/155392151/0/Terveydenhuollon+menot+ja+rahoitus+2022,+ennakkotiedot_v2024_06_27+(1).xlsx/bf2f83ab-7dc0-b8a4-bb53-48f7a8597095?t=1719474968417)
+                   
+* [TILASTORAPORTTI 41/2024](https://www.julkari.fi/bitstream/handle/10024/149430/Tilastoraportti_41_2024.pdf?sequence=1&isAllowed=y)
+                   
+* [Talousarvioesitys 2023](https://budjetti.vm.fi/sisalto.jsp?year=2023&lang=fi&maindoc=/2023/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:3:79:81:)
 
-TILASTORAPORTTI 41/2024: https://www.julkari.fi/bitstream/handle/10024/149430/Tilastoraportti_41_2024.pdf?sequence=1&isAllowed=y
+* [TILASTORAPORTTI 49/2024](https://www.julkari.fi/bitstream/handle/10024/149898/Sosiaali-%20ja%20terveyspalvelujen%20talous%202023.pdf?sequence=6&isAllowed=y)
         ''')
 elif chosen_model == "Vertailu":
     st.write("Valitse kysymys")

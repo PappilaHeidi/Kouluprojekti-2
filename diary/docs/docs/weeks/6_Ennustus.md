@@ -1,10 +1,10 @@
-# Koneopiminen ja Ennustus
+# **Koneopiminen ja Ennustus**
 
 ## CNN
 Yksidimensionaalinen konvoluutioverkko käsittelee vektorijonoa esim. sanoja tai lukuja, ikään kuin se olisi kuva. Konvoluutiosuodin liikkuu jonoa pitkin yhden ulottuvuuden mukaisesti, ja sillä on potentiaalia oppia tiettyjä kaavoja tai lyhyitä alijaksoja, jotka ovat olennaisia ennustuksen kannalta.[^72]
 
 ### Skaalattu X, skaalaamaton y
-CNN-mallimme sisältää vain 4-7 harjoitusaskelta, mikä tarkoittaa, että sillä ei todennäköisesti ole riittävästi dataa oppiakseen tehokkaasti skaalatun $X$ ja skaalaamattoman $y$ välistä yhteyttä. Malli yrittää mukauttaa ennustetun funktion todelliseen funktioon ja rajallinen aikajakso ei riitä, mikä voi johtaa huonoihin ennusteisiin.
+CNN-mallimme sisältää vain 4-7 harjoitusaskelta, mikä tarkoittaa, että sillä ei todennäköisesti ole riittävästi dataa oppiakseen tehokkaasti skaalatun `$X$` ja skaalaamattoman `$y$` välistä yhteyttä. Malli yrittää mukauttaa ennustetun funktion todelliseen funktioon ja rajallinen aikajakso ei riitä, mikä voi johtaa huonoihin ennusteisiin.
 
 Skaalatun y-muuttujan (target) käyttö voi olla hyödyllistä, erityisesti lyhyissä aikasarjoissa, koska se auttaa normalisoimaan tavoitearvojen vaihteluvälin ja varmistaa, että CNN ei kohtaa vaikeuksia käsitellä suuria vaihteluita harjoittelun alkuvaiheessa.
 
@@ -25,14 +25,16 @@ Malli saattaa oppia priorisoimaan korkeamman alueen ominaisuuden malleja, vaikka
 Korkeammille budjetti-ominaisuuksille tehtiin logaritminen muutos ennen globaalia skaalausta:
 
 ### Tulevan paljastaminen koulutuksissa
-Yksi huomion otettava asia, kun ennustetaan tulevaisuutta on koulutusvaiheessa mahdollisesti paljastettu skaalaus. Jos datan vaihteluväli $X_{min}$ ja $X_{max}$ pysyy vakiona (aina välillä 0–5), globaalilla skaalaamisella ei paljasteta tulevaa tietoa ja kaavaa. Tämä siksi, että MinMaxScaler vain kartoittaa arvot suhteellisesti tunnetun kiinteän vaihteluvälin sisällä.
+Yksi huomion otettava asia, kun ennustetaan tulevaisuutta on koulutusvaiheessa mahdollisesti paljastettu skaalaus. Jos datan vaihteluväli `$X_{min}$` ja `$X_{max}$` pysyy vakiona (aina välillä 0–5), globaalilla skaalaamisella ei paljasteta tulevaa tietoa ja kaavaa. Tämä siksi, että MinMaxScaler vain kartoittaa arvot suhteellisesti tunnetun kiinteän vaihteluvälin sisällä.
 
 ```
 columns_to_downscale = ['quarterly_budget_lag1', 'quarterly_workforce_lag1']
 lagged_features[columns_to_downscale] = np.log1p(lagged_features[columns_to_downscale])
 ```
-![alt text](../images/image_tab_bud.png)
 
+![BUDGET](../images/image_tab_bud.png)
+
+**Kuva 1:** Kuvassa näkyy kvartaali budjettien sarakkeet ja budjettien suuruus.
 
 ### Satunnainen arvaus
 
@@ -55,20 +57,18 @@ Korkea korrelaatio (positiivinen tai negatiivinen):
 * Piirteet, joilla on korkea positiivinen korrelaatio (esim. lähellä +1), tarkoittavat, että kun piirteen arvo kasvaa, myös y yleensä kasvaa.
 * Piirteet, joilla on korkea negatiivinen korrelaatio (esim. lähellä -1), tarkoittavat, että kun piirteen arvo kasvaa, y yleensä pienenee.
 
-![alt text](../images/image5.png)
+![KORRELAATIO GRAAFI](../images/image5.png)
 
-Kuvio 1. *Esimerkki Epälineaarisesta korrelaatiosta, jossa korrelaatiokerroin on lähellä nollaa*. [^82]
+**Kuvio 1:** *Esimerkki Epälineaarisesta korrelaatiosta, jossa korrelaatiokerroin on lähellä nollaa*. [^82]
 
-![alt text](../images/image6.png)
-
-Kuvio 2: *Kainuun kyselydatan korrelaatiot vs kohdekysymys 1*
+![TOINEN GRAAFI](../images/image6.png)
+**Kuvio 2:** *Kainuun kyselydatan korrelaatiot vs kohdekysymys 1*
 
 
 Korkea korrelaatio viittaa yleensä lineaariseen yhteyteen kohdemuuttujan kanssa. Seuraava kuva on scatter-plot kyseisestä kohdemuuttujasta ja toiseksi suurimman korrelaation omaavan muuttujan kanssa (kysymys 3).
 
-![alt text](../images/image7.png)
-
-Kuvio 3: *Lineaarinen yhteys kysymys 3 ja Kysymys 1 (kohdemuuttuja) välillä*
+![KOLMAS GRAAFI](../images/image7.png)
+**Kuvio 3:** *Lineaarinen yhteys kysymys 3 ja Kysymys 1 (kohdemuuttuja) välillä*
 
 **Viivästetyt piirteet (lagged features):**
 
@@ -82,9 +82,9 @@ Piirteet, joilla on korrelaatio lähellä nollaa, osoittavat heikon tai olematto
 
 ## Mitä Importancegraafi kertoo?
 
-![alt text](../images/image8.png)
+![IMPORTANCE](../images/image8.png)
 
-*Kuvio 4: Importance Feature graafi* 
+**Kuvio 4:** *Importance Feature graafi*
 
 Korkea korrellaatio viittaa siihen, että kysymys (feature) vaikuttaa suoraan kohdearvoon (target). Kun Importance on myös korkealla, malli nojautuu vahvasti tähän piirteeseen (feature) ennusteen (target value) tekemisessä.
 
@@ -92,9 +92,9 @@ Piirteen (feature) korrelaatio voi olla matala, mutta se voi silti olla merkitt�
 
 Kun katsotaan Feature Importance graafia (kuvio 4), huomataan, että kysymyksellä 21(lag) on suurin tärkeys mallin ennustamiseen, mutta korrelaatiograafissa se ei ole merkittävä (-0.4). Voisiko tämä kertoa epälineaarisesta yhteydestä?
 
-![alt text](../images/image9.png)
+![EPÄLINEAARISUUS](../images/image9.png)
 
-*Kuvio 5: Epälineaarinen yhteys kohdemuuttujan ja kysymys 21(lag):n välillä*
+**Kuvio 5:** *Epälineaarinen yhteys kohdemuuttujan ja kysymys 21(lag):n välillä*
 
 Kun siirrymme 4.4 arvosta lähemmäs 4.8 arvoon, ennusteen arvo laskee, mutta kun jatkamme 4.8 kohti täydellistä arvosanaa 5, ennuste alkaakin kasvamaan. Tämä kertoo epälineaarisesta yhteydestä.
 
@@ -113,30 +113,31 @@ Käytämme HOPP kainuun datajoukossa ainoastaan yhtä lagged arvoa, yksinkertais
 
 Aikajaksomallien testaukseen olemme käyttäneet backtestingiä, joka sopii aikajaksotettuun dataan (time-series). Tyypillistä ristiin validointia (cross validation) emme voi käyttää aikaan sidottuun dataan, sillä datapisteet ovat riippuvaisia ajasta ja kulkevat yhteen suuntaan. Laajenevassa ikkunoinnissa (expanding window), otamme aluksi tietyn otannan esim. 3 ensimmäistä kvartaalia ja testaamme sitä neljänteen riviin (sen hetken tulevaisuus). Jatkamme, kunnes datajoukon viimeisin (nykyhetki) tulee vastaan. Malli koulutetaan osajoukoilla, kunnes koko data on fitattu.
 
-![alt text](../images/image10.png)
+![VALIDOINTI](../images/image10.png)
 
-*Kuva. Liukuva ja laajeneva ikkunointi* [^23]
+**Kuva 2:** *Liukuva ja laajeneva ikkunointi* [^23]
 
 Validointimetriikkana käytämme Root Mean Squared Error:a (RMSE), joka on yksi yleisimmistä koneoppimisalgoritmien virheeiden keskihajonnan mittauksissa. Arvo kertoo kuinka kaukana olemme todellisesta y:n arvosta. Jos RMSE arvo on 0,21 ja ennustettavan muuttujan skaala on 0-5 välillä, ennustettu arvo on 0,21 pisteen päässä todellisesta y:n arvosta.
 
 ## Featureissa käytettyjen arvojen lähteet
 
-### Vuoden 2020 - 2022 "Terveydenhuollon käyttömenot yhteensä"
-excel-tiedosto: https://thl.fi/documents/155392151/0/Terveydenhuollon+menot+ja+rahoitus+2022,+ennakkotiedot_v2024_06_27+(1).xlsx/bf2f83ab-7dc0-b8a4-bb53-48f7a8597095?t=1719474968417
+### Vuoden 2020 - 2022 "Terveydenhuollon käyttömenot yhteensä" linkki:
 
-### vuoden 2023 Hyvinvointialueiden rahoitus ja valtion toimenpiteetbudjetti
+* [excel-tiedosto](https://thl.fi/documents/155392151/0/Terveydenhuollon+menot+ja+rahoitus+2022,+ennakkotiedot_v2024_06_27+(1).xlsx/bf2f83ab-7dc0-b8a4-bb53-48f7a8597095?t=1719474968417)
 
-Talousarvioesitys 2023: https://budjetti.vm.fi/sisalto.jsp?year=2023&lang=fi&maindoc=/2023/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:3:79:81: 
+### Vuoden 2023 Hyvinvointialueiden rahoitus ja valtion toimenpiteetbudjetti linkit:
 
-TILASTORAPORTTI 49/2024: https://www.julkari.fi/bitstream/handle/10024/149898/Sosiaali-%20ja%20terveyspalvelujen%20talous%202023.pdf?sequence=6&isAllowed=y
+* [Talousarvioesitys 2023](https://budjetti.vm.fi/sisalto.jsp?year=2023&lang=fi&maindoc=/2023/tae/hallituksenEsitys/hallituksenEsitys.xml&opennode=0:1:3:79:81)
+
+* [TILASTORAPORTTI 49/2024](https://www.julkari.fi/bitstream/handle/10024/149898/Sosiaali-%20ja%20terveyspalvelujen%20talous%202023.pdf?sequence=6&isAllowed=y)
 
 ### Kuntien terveyspalvelujen henkilöstö Feature
 
 Terveys- ja sosiaalipalvelujen henkilöstömittauksia on saatavilla vuodelle 2022 saakka. Datajoukkoon lisätään vuodesta 2020 eteenpäin olevat henkilöstön määrät, seuraavan vuoden kvartaaleihin. Henkilöstön määrä on yksi vaikuttava tekijä asiakastyytyväisyyteen, jolla voi olla vaikutusta seuraavien vuosien tyytyväisyyskyselyihin.
 
-2023-2024 dataa ei ole tällä hetkellä saatavilla. Ennustusta tehdessä, syötetään arvio henkilöstön määrästä.
+2023-2024 dataa ei ole tällä hetkellä saatavilla. Ennustusta tehdessä, syötetään arvio henkilöstön määrästä:
 
-TILASTORAPORTTI 41/2024: https://www.julkari.fi/bitstream/handle/10024/149430/Tilastoraportti_41_2024.pdf?sequence=1&isAllowed=y
+* [TILASTORAPORTTI 41/2024](https://www.julkari.fi/bitstream/handle/10024/149430/Tilastoraportti_41_2024.pdf?sequence=1&isAllowed=y)
 
 
 [^23]: Preventive maintenance for heterogeneous industrial vehicles with incomplete usage data. https://www.researchgate.net/publication/351885630_Preventive_maintenance_for_heterogeneous_industrial_vehicles_with_incomplete_usage_data

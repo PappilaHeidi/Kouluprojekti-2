@@ -1,4 +1,4 @@
-# HOPP Lineaarinen Regressioanalyysi
+# **HOPP Lineaarinen Regressioanalyysi**
 
 ## Järjestelmän yleiskuvaus
 
@@ -62,7 +62,8 @@ fig.add_trace(go.Scatter(
 ))
 ```
 
-![alt text](../images/lin1.PNG)
+![LIN REG](../images/lin1.PNG)
+**Kuva 1:** Kuvassa näkyy **Logistisen Regression** ennustus tietylle yksikön kysymykselle, sekä kysymyksen historiallinen data.
 
 ## Järjestelmän rajoitukset
 
